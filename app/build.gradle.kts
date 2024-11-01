@@ -1,6 +1,8 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
+    id("com.google.dagger.hilt.android")
+    kotlin("kapt")
 }
 
 android {
@@ -24,6 +26,18 @@ android {
                 "proguard-rules.pro"
             )
         }
+        release {
+            buildConfigField("String", "WORD_SEARCH_URL", "\"https://api.datamuse.com/\"")
+            buildConfigField("String", "DICTIONARY_SEARCH_URL", "\"https://api.dictionaryapi.dev/api/v2/entries/en/\"")
+        }
+        debug {
+            buildConfigField("String", "WORD_SEARCH_URL", "\"https://api.datamuse.com/\"")
+            buildConfigField("String", "DICTIONARY_SEARCH_URL", "\"https://api.dictionaryapi.dev/api/v2/entries/en/\"")
+        }
+    }
+    buildFeatures{
+         viewBinding = true
+         buildConfig = true
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
@@ -41,7 +55,19 @@ dependencies {
     implementation(libs.material)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
+    implementation(libs.timber)
+    implementation(libs.hilt.android)
+    implementation(libs.androidx.lifecycle.extensions)
+    implementation(libs.androidx.lifecycle.runtime)
+    implementation(libs.retrofit)
+    implementation(libs.converter.gson)
+    implementation(libs.logging.interceptor)
+    implementation(libs.okhttp)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+    kapt(libs.hilt.android.compiler)
+    annotationProcessor(libs.hilt.android.compiler)
+    annotationProcessor(libs.androidx.lifecycle.compiler)
+
 }
