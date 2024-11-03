@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Dictornary_MVVM_app</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_main_fragment">Hello Main fragment</string>
+    <string name="hello_search_fragment">Hello search fragment</string>
+    <string name="hello_result_fragment">Hello result fragment</string>
 </resources>

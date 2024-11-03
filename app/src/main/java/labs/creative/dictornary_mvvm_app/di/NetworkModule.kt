@@ -4,8 +4,6 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 import labs.creative.dictornary_mvvm_app.BuildConfig
 import labs.creative.dictornary_mvvm_app.data.remote.api.DatamuseApiService
 import labs.creative.dictornary_mvvm_app.data.remote.api.DictionaryApiService
@@ -14,6 +12,8 @@ import labs.creative.dictornary_mvvm_app.domain.usecase.GetWordInfoUseCase
 import labs.creative.dictornary_mvvm_app.domain.usecase.GetWordSuggestionsUseCase
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Named
 import javax.inject.Singleton
 
@@ -25,8 +25,8 @@ object NetworkModule {
     @Singleton
     @Provides
     @Named("DatamuseRetrofit")
-    fun provideDatamuseRetrofit(): Retrofit {
-        return Retrofit.Builder().client(OkHttpClient().newBuilder().addInterceptor(provideHttpLogger()).build())
+    fun provideDatamuseRetrofit(loggingInterceptor: HttpLoggingInterceptor): Retrofit {
+        return Retrofit.Builder().client(OkHttpClient().newBuilder().addInterceptor(loggingInterceptor).build())
             .baseUrl(BuildConfig.WORD_SEARCH_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
@@ -35,8 +35,8 @@ object NetworkModule {
     @Singleton
     @Provides
     @Named("DictionaryRetrofit")
-    fun provideDictionaryRetrofit(): Retrofit {
-        return Retrofit.Builder().client(OkHttpClient().newBuilder().addInterceptor(provideHttpLogger()).build())
+    fun provideDictionaryRetrofit(loggingInterceptor: HttpLoggingInterceptor): Retrofit {
+        return Retrofit.Builder().client(OkHttpClient().newBuilder().addInterceptor(loggingInterceptor).build())
             .baseUrl(BuildConfig.DICTIONARY_SEARCH_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .build()

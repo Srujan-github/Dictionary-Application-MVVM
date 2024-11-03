@@ -1,4 +1,4 @@
-package labs.creative.dictornary_mvvm_app
+package labs.creative.dictornary_mvvm_app.core.utils
 
 
 sealed class Resource<T>(val data: T? = null, val errorMessage: String? = null) {
