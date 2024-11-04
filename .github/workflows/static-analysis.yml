@@ -2,6 +2,9 @@ name: Static Analysis
 
 # Controls when the workflow will run
 on:
+  push:
+    branches:
+      - develop
   pull_request:
     branches: [develop]
 
