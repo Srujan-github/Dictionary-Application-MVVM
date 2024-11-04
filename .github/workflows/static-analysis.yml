@@ -4,9 +4,9 @@ name: Static Analysis
 on:
   push:
     branches:
-      - develop
+      - Develop
   pull_request:
-    branches: [develop]
+    branches: [Develop]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
