@@ -1,8 +1,7 @@
-package labs.creative.dictornary_mvvm_app
+package labs.creative.dictornarymvvm
 
+import org.junit.Assert.assertEquals
 import org.junit.Test
-
-import org.junit.Assert.*
 
 /**
  * Example local unit test, which will execute on the development machine (host).
