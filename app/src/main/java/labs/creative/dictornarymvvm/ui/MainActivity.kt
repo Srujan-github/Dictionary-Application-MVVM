@@ -3,13 +3,17 @@ package labs.creative.dictornarymvvm.ui
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import dagger.hilt.android.AndroidEntryPoint
-import labs.creative.dictornary_mvvm_app.R
+import labs.creative.dictornarymvvmapp.R
+import labs.creative.dictornarymvvmapp.databinding.ActivityMainBinding
+
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
-
+private lateinit var _binding : ActivityMainBinding
+private val binding get() = _binding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        _binding = ActivityMainBinding.inflate(layoutInflater,null,false)
+        setContentView(binding.root)
     }
 }

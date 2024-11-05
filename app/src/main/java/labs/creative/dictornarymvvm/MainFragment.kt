@@ -6,7 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 
 import androidx.fragment.app.Fragment
-import labs.creative.dictornary_mvvm_app.databinding.FragmentMainBinding
+import labs.creative.dictornarymvvmapp.databinding.FragmentMainBinding
+
 
 class MainFragment : Fragment() {
 

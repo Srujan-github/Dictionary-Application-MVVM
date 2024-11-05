@@ -4,13 +4,10 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import labs.creative.dictornary_mvvm_app.BuildConfig
 import labs.creative.dictornarymvvm.data.remote.api.DatamuseApiService
 import labs.creative.dictornarymvvm.data.remote.api.DictionaryApiService
-
-import labs.creative.dictornarymvvm.domain.repository.WordRepository
-import labs.creative.dictornarymvvm.domain.usecase.GetWordInfoUseCase
 import labs.creative.dictornarymvvm.domain.usecase.GetWordSuggestionsUseCase
+import labs.creative.dictornarymvvmapp.BuildConfig
 
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor

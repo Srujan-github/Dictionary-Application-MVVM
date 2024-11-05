@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/mainFragment"
-        android:name="labs.creative.dictornary_mvvm_app.MainFragment"
+        android:name="labs.creative.dictornarymvvm.MainFragment"
         android:label="fragment_main"
         tools:layout="@layout/fragment_main" >
         <action
@@ -19,7 +19,7 @@
     </fragment>
     <fragment
         android:id="@+id/searchFragment"
-        android:name="labs.creative.dictornary_mvvm_app.SearchFragment"
+        android:name="labs.creative.dictornarymvvm.SearchFragment"
         android:label="fragment_search"
         tools:layout="@layout/fragment_search" >
         <action
@@ -28,7 +28,7 @@
     </fragment>
     <fragment
         android:id="@+id/resultFragment"
-        android:name="labs.creative.dictornary_mvvm_app.ResultFragment"
+        android:name="labs.creative.dictornarymvvm.ResultFragment"
         android:label="fragment_result"
         tools:layout="@layout/fragment_result" />
 </navigation>
