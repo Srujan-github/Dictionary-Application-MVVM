@@ -18,6 +18,8 @@ jobs:
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
+      - name: Set executable permissions for gradlew
+        run: chmod +x ./gradlew
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
       - name: Set up JDK 17
@@ -28,9 +30,7 @@ jobs:
 
       # Runs a single command using the runners shell
       - name: detekt
-        run:
-            chmod +x gradlew
-          ./gradlew detekt
+        run: ./gradlew detekt
 
 
   spotless:
@@ -39,6 +39,8 @@ jobs:
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
+      - name: Set executable permissions for gradlew
+        run: chmod +x ./gradlew
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
       - name: Set up JDK 17
@@ -49,6 +51,4 @@ jobs:
 
       # Runs a single command using the runners shell
       - name: spotless
-        run:
-          chmod +x gradlew
-          ./gradlew spotlessCheck
+        run: ./gradlew spotlessCheck
