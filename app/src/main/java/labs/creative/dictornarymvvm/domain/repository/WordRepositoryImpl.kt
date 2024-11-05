@@ -1,11 +1,13 @@
 package labs.creative.dictornarymvvm.domain.repository
 
 
-import labs.creative.dictornary_mvvm_app.data.remote.api.DatamuseApiService
-import labs.creative.dictornary_mvvm_app.data.remote.api.DictionaryApiService
+
+import labs.creative.dictornarymvvm.data.remote.api.DatamuseApiService
+import labs.creative.dictornarymvvm.data.remote.api.DictionaryApiService
 import labs.creative.dictornarymvvm.domain.mappers.toDomain
 import labs.creative.dictornarymvvm.domain.model.WordInfo
-import labs.creative.dictornary_mvvm_app.domain.model.WordSuggestion
+import labs.creative.dictornarymvvm.domain.model.WordSuggestion
+
 import javax.inject.Inject
 
 class WordRepositoryImpl @Inject constructor(

@@ -1,7 +1,7 @@
 package labs.creative.dictornarymvvm.domain.usecase
 
 
-import labs.creative.dictornary_mvvm_app.domain.model.WordSuggestion
+import labs.creative.dictornarymvvm.domain.model.WordSuggestion
 import labs.creative.dictornarymvvm.domain.repository.WordRepository
 import javax.inject.Inject
 

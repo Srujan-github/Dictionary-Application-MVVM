@@ -1,6 +1,6 @@
 package labs.creative.dictornarymvvm.data.remote.api
 
-import labs.creative.dictornary_mvvm_app.data.remote.model.WordSuggestionDto
+import labs.creative.dictornarymvvm.data.remote.model.WordSuggestionDto
 import retrofit2.http.GET
 import retrofit2.http.Query
 

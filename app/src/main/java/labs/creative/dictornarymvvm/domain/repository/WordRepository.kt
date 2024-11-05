@@ -1,7 +1,7 @@
 package labs.creative.dictornarymvvm.domain.repository
 
 import labs.creative.dictornarymvvm.domain.model.WordInfo
-import labs.creative.dictornary_mvvm_app.domain.model.WordSuggestion
+import labs.creative.dictornarymvvm.domain.model.WordSuggestion
 
 
 interface WordRepository {

@@ -6,11 +6,11 @@ plugins {
 }
 
 android {
-    namespace = "labs.creative.dictornary_mvvm_app"
+    namespace = "labs.creative.dictornarymvvmapp"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "labs.creative.dictornary_mvvm_app"
+        applicationId = "labs.creative.dictornarymvvmapp"
         minSdk = 24
         targetSdk = 34
         versionCode = 1

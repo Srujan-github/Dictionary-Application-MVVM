@@ -5,11 +5,13 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import labs.creative.dictornary_mvvm_app.BuildConfig
-import labs.creative.dictornary_mvvm_app.data.remote.api.DatamuseApiService
-import labs.creative.dictornary_mvvm_app.data.remote.api.DictionaryApiService
+import labs.creative.dictornarymvvm.data.remote.api.DatamuseApiService
+import labs.creative.dictornarymvvm.data.remote.api.DictionaryApiService
+
 import labs.creative.dictornarymvvm.domain.repository.WordRepository
 import labs.creative.dictornarymvvm.domain.usecase.GetWordInfoUseCase
-import labs.creative.dictornary_mvvm_app.domain.usecase.GetWordSuggestionsUseCase
+import labs.creative.dictornarymvvm.domain.usecase.GetWordSuggestionsUseCase
+
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -62,7 +64,7 @@ object NetworkModule {
 
     @Singleton
     @Provides
-    fun provideWordSuggestionUseCase(repository: labs.creative.dictornarymvvm.domain.repository.WordRepository):GetWordSuggestionsUseCase{
+    fun provideWordSuggestionUseCase(repository: labs.creative.dictornarymvvm.domain.repository.WordRepository): GetWordSuggestionsUseCase {
         return GetWordSuggestionsUseCase(repository)
     }
 

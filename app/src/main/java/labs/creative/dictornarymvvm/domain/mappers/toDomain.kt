@@ -1,9 +1,9 @@
 package labs.creative.dictornarymvvm.domain.mappers
 
-import labs.creative.dictornary_mvvm_app.data.remote.model.WordInfoDto
-import labs.creative.dictornary_mvvm_app.data.remote.model.WordSuggestionDto
-import labs.creative.dictornarymvvm.domain.model.WordInfo
-import labs.creative.dictornary_mvvm_app.domain.model.WordSuggestion
+import labs.creative.dictornarymvvm.data.remote.model.WordInfoDto
+import labs.creative.dictornarymvvm.data.remote.model.WordSuggestionDto
+import labs.creative.dictornarymvvm.domain.model.WordSuggestion
+
 
 fun WordSuggestionDto.toDomain(): WordSuggestion {
     return WordSuggestion(
