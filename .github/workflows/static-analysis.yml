@@ -28,7 +28,10 @@ jobs:
 
       # Runs a single command using the runners shell
       - name: detekt
-        run: ./gradlew detekt
+        run:
+            chmod +x gradlew
+          ./gradlew detekt
+
 
   spotless:
     name: Spotless
@@ -46,4 +49,6 @@ jobs:
 
       # Runs a single command using the runners shell
       - name: spotless
-        run: ./gradlew spotlessCheck
+        run:
+          chmod +x gradlew
+          ./gradlew spotlessCheck
