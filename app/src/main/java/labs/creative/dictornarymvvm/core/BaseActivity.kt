@@ -12,7 +12,7 @@ open class BaseActivity :AppCompatActivity(){
     }
 
     fun isNetworkConnected(): Boolean {
-        return labs.creative.dictornarymvvm.core.utils.NetworkUtils.isNetworkConnected(applicationContext)
+        return NetworkUtils.isNetworkConnected(applicationContext)
     }
 
 }
