@@ -4,4 +4,5 @@
     <string name="hello_main_fragment">Hello Main fragment</string>
     <string name="hello_search_fragment">Hello search fragment</string>
     <string name="hello_result_fragment">Hello result fragment</string>
+    <string name="dictionary_app_title">Dictionary</string>
 </resources>
