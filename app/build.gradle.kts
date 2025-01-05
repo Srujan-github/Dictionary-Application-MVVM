@@ -83,4 +83,7 @@ dependencies {
     annotationProcessor(libs.hilt.android.compiler)
     annotationProcessor(libs.androidx.lifecycle.compiler)
 
+    //dateKT
+    detektPlugins(libs.detekt.formatting)
+
 }
