@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import labs.creative.dictornary_mvvm_app.databinding.FragmentMainBinding
 
+
 class MainFragment : Fragment() {
 
     private var _binding: FragmentMainBinding? = null

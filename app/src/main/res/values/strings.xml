@@ -5,4 +5,6 @@
     <string name="hello_search_fragment">Hello search fragment</string>
     <string name="hello_result_fragment">Hello result fragment</string>
     <string name="dictionary_app_title">Dictionary</string>
+    <string name="search_icon">search</string>
+    <string name="search">Search any word</string>
 </resources>
