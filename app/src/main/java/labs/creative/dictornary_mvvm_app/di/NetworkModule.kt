@@ -5,6 +5,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import labs.creative.dictornary_mvvm_app.BuildConfig
+import labs.creative.dictornary_mvvm_app.SearchViewModel
 import labs.creative.dictornary_mvvm_app.data.remote.api.DatamuseApiService
 import labs.creative.dictornary_mvvm_app.data.remote.api.DictionaryApiService
 import labs.creative.dictornary_mvvm_app.domain.repository.WordRepository
@@ -65,6 +66,12 @@ object NetworkModule {
     fun provideWordSuggestionUseCase(repository: WordRepository):GetWordSuggestionsUseCase{
         return GetWordSuggestionsUseCase(repository)
     }
+
+//    @Singleton
+//    @Provides
+//    fun provideSearchViewModel(getWordSuggestionsUseCase: GetWordSuggestionsUseCase): SearchViewModel {
+//        return SearchViewModel(getWordSuggestionsUseCase)
+//    }
 
     @Singleton
     @Provides

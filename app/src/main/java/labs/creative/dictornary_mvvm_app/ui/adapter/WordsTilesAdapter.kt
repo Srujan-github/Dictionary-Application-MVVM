@@ -3,11 +3,16 @@ package labs.creative.dictornary_mvvm_app.ui.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import labs.creative.dictornary_mvvm_app.data.remote.model.WordInfoDto
 import labs.creative.dictornary_mvvm_app.databinding.WordCardViewBinding
 
-class WordsTilesAdapter(private val wordsInfo: List<WordInfoDto>) :
+data class WordInfo(
+    val word: String,
+    val description: String
+)
+
+class WordsTilesAdapter(private val wordsInfo: List<WordInfo>) :
     RecyclerView.Adapter<WordsTilesAdapter.ViewHolder>() {
+
     class ViewHolder(val binding: WordCardViewBinding) :
         RecyclerView.ViewHolder(binding.root)
 
@@ -25,6 +30,6 @@ class WordsTilesAdapter(private val wordsInfo: List<WordInfoDto>) :
         val wordInfo = wordsInfo[position]
         holder.binding.tvWord.text = wordInfo.word
         holder.binding.tvWordDescription.text =
-            wordInfo.meanings[0].definitions[0].definition
+            wordInfo.description
     }
 }

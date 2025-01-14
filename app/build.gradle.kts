@@ -80,6 +80,7 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     kapt(libs.hilt.android.compiler)
+    implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
     annotationProcessor(libs.hilt.android.compiler)
     annotationProcessor(libs.androidx.lifecycle.compiler)
 

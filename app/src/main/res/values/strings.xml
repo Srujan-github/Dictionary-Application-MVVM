@@ -7,4 +7,7 @@
     <string name="dictionary_app_title">Dictionary</string>
     <string name="search_icon">search</string>
     <string name="search">Search any word</string>
+    <string name="back">Back Button</string>
+    <string name="search_any_word">Search any word</string>
+    <string name="no_search_found">No Search found</string>
 </resources>

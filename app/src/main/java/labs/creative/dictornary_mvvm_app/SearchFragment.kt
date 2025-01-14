@@ -1,59 +1,64 @@
 package labs.creative.dictornary_mvvm_app
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.widget.addTextChangedListener
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
+import labs.creative.dictornary_mvvm_app.databinding.FragmentSearchBinding
+import labs.creative.dictornary_mvvm_app.ui.adapter.WordSearchAdapter
+import javax.inject.Inject
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [SearchFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class SearchFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+    private lateinit var viewModel: SearchViewModel
+    private var _binding: FragmentSearchBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
+
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_search, container, false)
-    }
-
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment SearchFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            SearchFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+    ): View {
+        _binding = FragmentSearchBinding.inflate(inflater, container, false)
+        viewModel = ViewModelProvider(this)[SearchViewModel::class.java]
+        binding.rcvWordSuggestions.layoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+        lifecycleScope.launch {
+            viewModel.wordSuggestions.collectLatest { suggestions ->
+                binding.rcvWordSuggestions.visibility = View.VISIBLE
+                binding.rcvWordSuggestions.adapter = WordSearchAdapter(suggestions)
+            }
+            viewModel.isLoading.collectLatest { isLoading ->
+                binding.rcvWordSuggestions.visibility = View.VISIBLE
+                if (isLoading){
+                    binding.progressBar.visibility = View.VISIBLE
+                }else{
+                    binding.progressBar.visibility = View.GONE
                 }
             }
+            viewModel.error.collectLatest { error ->
+                binding.rcvWordSuggestions.visibility = View.GONE
+                binding.tvPageEmptyHint.visibility = View.VISIBLE
+                binding.tvPageEmptyHint.text = error
+            }
+        }
+
+        binding.etSearch.addTextChangedListener { text ->
+            if (text.toString().isNotEmpty()) {
+                viewModel.fetchWordSuggestions(text.toString())
+            }
+        }
+        return binding.root
     }
 }

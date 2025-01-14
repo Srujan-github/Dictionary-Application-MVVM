@@ -1,4 +1,4 @@
-package labs.creative.dictornarymvvm.ui.widgets
+package labs.creative.dictornary_mvvm_app.ui.widgets
 
 import android.content.Context
 import android.os.Handler
