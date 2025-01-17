@@ -7,11 +7,13 @@ import labs.creative.dictornary_mvvm_app.databinding.WordCardViewBinding
 import labs.creative.dictornary_mvvm_app.domain.model.WordSuggestion
 
 
-class WordSearchAdapter(private val wordsMatch: List<WordSuggestion>) :
+class WordSearchAdapter(private var wordsMatch: List<WordSuggestion>) :
     RecyclerView.Adapter<WordSearchAdapter.ViewHolder>() {
 
     class ViewHolder(val binding: WordCardViewBinding) : RecyclerView.ViewHolder(binding.root)
-
+    fun submitList(wordsMatch: List<WordSuggestion>) {
+        this.wordsMatch = wordsMatch
+    }
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int

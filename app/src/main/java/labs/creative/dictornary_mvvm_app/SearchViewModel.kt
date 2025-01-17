@@ -11,15 +11,15 @@ import labs.creative.dictornary_mvvm_app.domain.usecase.GetWordSuggestionsUseCas
 import javax.inject.Inject
 
 @HiltViewModel
-class SearchViewModel  @Inject constructor(
+class SearchViewModel @Inject constructor(
     private val getWordSuggestionsUseCase: GetWordSuggestionsUseCase
-): ViewModel() {
+) : ViewModel() {
+
     private val _wordSuggestions = MutableStateFlow<List<WordSuggestion>>(emptyList())
     val wordSuggestions: StateFlow<List<WordSuggestion>> get() = _wordSuggestions
 
-    private val _isLoading = MutableStateFlow(false)
+    private val _isLoading = MutableStateFlow<Boolean>(false)
     val isLoading: StateFlow<Boolean> get() = _isLoading
-
 
     private val _error = MutableStateFlow<String?>(null)
     val error: StateFlow<String?> get() = _error
@@ -27,6 +27,8 @@ class SearchViewModel  @Inject constructor(
     fun fetchWordSuggestions(meaning: String) {
         viewModelScope.launch {
             _isLoading.value = true
+            _error.value = null  // Reset error state before starting the request
+
             try {
                 val suggestions = getWordSuggestionsUseCase(meaning)
                 _wordSuggestions.value = suggestions

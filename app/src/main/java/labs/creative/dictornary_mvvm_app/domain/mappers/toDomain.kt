@@ -13,7 +13,7 @@ fun WordSuggestionDto.toDomain(): WordSuggestion {
 }
 
 fun WordInfoDto.toDomain(): WordInfo {
-    val phoneticsText = phonetics.map { it.text } ?: emptyList()
+    val phoneticsText = phonetics.map { it.text }
     val definitionsText = meanings.flatMap { meaning ->
         meaning.definitions.map { it.definition }
     }

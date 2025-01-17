@@ -6,5 +6,5 @@ import retrofit2.http.Query
 
 fun interface DatamuseApiService {
     @GET("words")
-    suspend fun getWordSuggestions(@Query("ml") meaning: String): List<WordSuggestionDto>
+    suspend fun getWordSuggestions(@Query("sp") meaning: String): List<WordSuggestionDto>
 }
