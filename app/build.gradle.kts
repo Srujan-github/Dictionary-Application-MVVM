@@ -2,7 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
     id("com.google.dagger.hilt.android")
-    kotlin("kapt")
+    alias(libs.plugins.ksp)
 }
 
 android {
@@ -79,9 +79,7 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
-    kapt(libs.hilt.android.compiler)
-    annotationProcessor(libs.hilt.android.compiler)
-    annotationProcessor(libs.androidx.lifecycle.compiler)
+    ksp(libs.hilt.android.compiler)
 
     //dateKT
     detektPlugins(libs.detekt.formatting)

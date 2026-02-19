@@ -23,6 +23,7 @@ legacySupportV4 = "1.0.0"
 
 plugin-detekt = "1.23.7"
 plugin-spotless = "6.5.1"
+ksp = "1.9.0-1.0.13"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -59,4 +60,5 @@ android-application = { id = "com.android.application", version.ref = "agp" }
 jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "plugin-detekt" }
 spotless = { id = "com.diffplug.spotless", version.ref = "plugin-spotless" }
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 
