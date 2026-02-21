@@ -81,7 +81,13 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.core)
     ksp(libs.hilt.android.compiler)
 
+    implementation("androidx.hilt:hilt-navigation:1.2.0")
+    implementation("androidx.hilt:hilt-navigation-fragment:1.2.0")
+
     //dateKT
     detektPlugins(libs.detekt.formatting)
+}
 
+detekt {
+    autoCorrect = true
 }

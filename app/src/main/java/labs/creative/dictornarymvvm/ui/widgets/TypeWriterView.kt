@@ -7,6 +7,7 @@ import android.util.AttributeSet
 import android.view.ViewTreeObserver
 import androidx.appcompat.widget.AppCompatTextView
 
+@Suppress("TooManyFunctions", "MagicNumber")
 class TypeWriterView : AppCompatTextView {
     private var mText: CharSequence? = null
     private var mIndex = 0
@@ -34,14 +35,12 @@ class TypeWriterView : AppCompatTextView {
     constructor(context: Context) : super(context)
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
 
-
-
     // Start animating all the taglines one after another
     fun animateTaglines(taglines: List<String>) {
-        animateNextTagline( taglines, 0)
+        animateNextTagline(taglines, 0)
     }
 
-    private fun animateNextTagline( taglines: List<String>,index: Int) {
+    private fun animateNextTagline(taglines: List<String>, index: Int) {
         if (index < taglines.size) {
             animateText(taglines[index]) {
                 mHandler.postDelayed({
@@ -63,7 +62,6 @@ class TypeWriterView : AppCompatTextView {
         mHandler.postDelayed(characterAdder, mDelay)
         setOnAnimationChangeListener(object : OnAnimationChangeListener {
             override fun onAnimationEnd() {
-
                 onEnd() // Execute onEnd when animation ends
             }
         })
@@ -109,15 +107,16 @@ class TypeWriterView : AppCompatTextView {
 
         for (word in words) {
             val temp = finalSequence.substring(
-                Math.max(finalSequence.lastIndexOf("\n"), 0)
+                Math.max(finalSequence.lastIndexOf("\n"), 0),
             ) + " " + word
             val textWidth = paint.measureText(temp)
-            if (textWidth >= viewWidth)
+            if (textWidth >= viewWidth) {
                 finalSequence.append("\n").append(word)
-            else if (finalSequence.isEmpty())
+            } else if (finalSequence.isEmpty()) {
                 finalSequence.append(word)
-            else
+            } else {
                 finalSequence.append(" ").append(word)
+            }
         }
         return finalSequence.toString()
     }

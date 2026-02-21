@@ -1,11 +1,10 @@
 package labs.creative.dictornarymvvm.core
 
-
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import labs.creative.dictornarymvvm.core.utils.NetworkUtils
 
-open class BaseActivity :AppCompatActivity(){
+open class BaseActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -14,5 +13,4 @@ open class BaseActivity :AppCompatActivity(){
     fun isNetworkConnected(): Boolean {
         return NetworkUtils.isNetworkConnected(applicationContext)
     }
-
 }

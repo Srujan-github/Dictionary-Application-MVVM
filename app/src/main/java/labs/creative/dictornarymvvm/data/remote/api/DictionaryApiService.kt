@@ -1,6 +1,5 @@
 package labs.creative.dictornarymvvm.data.remote.api
 
-
 import labs.creative.dictornarymvvm.data.remote.model.WordInfoDto
 import retrofit2.http.GET
 import retrofit2.http.Path

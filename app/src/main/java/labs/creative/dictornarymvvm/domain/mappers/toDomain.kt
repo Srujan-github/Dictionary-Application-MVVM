@@ -4,11 +4,10 @@ import labs.creative.dictornarymvvm.data.remote.model.WordInfoDto
 import labs.creative.dictornarymvvm.data.remote.model.WordSuggestionDto
 import labs.creative.dictornarymvvm.domain.model.WordSuggestion
 
-
 fun WordSuggestionDto.toDomain(): WordSuggestion {
     return WordSuggestion(
         word = this.word,
-        score = this.score
+        score = this.score,
     )
 }
 
@@ -20,6 +19,6 @@ fun WordInfoDto.toDomain(): labs.creative.dictornarymvvm.domain.model.WordInfo {
     return labs.creative.dictornarymvvm.domain.model.WordInfo(
         word = this.word,
         phonetics = phoneticsText,
-        meanings = definitionsText
+        meanings = definitionsText,
     )
 }
