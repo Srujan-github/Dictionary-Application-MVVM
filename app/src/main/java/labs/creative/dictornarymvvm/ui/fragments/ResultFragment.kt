@@ -2,7 +2,6 @@ package labs.creative.dictornarymvvm.ui.fragments
 
 import android.content.Intent
 import android.os.Bundle
-import android.speech.tts.TextToSpeech
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,23 +16,22 @@ import com.google.android.material.chip.Chip
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import labs.creative.dictornarymvvm.core.TtsManager
 import labs.creative.dictornarymvvm.domain.model.WordInfo
 import labs.creative.dictornarymvvm.ui.viewmodel.ResultViewModel
 import labs.creative.dictornarymvvmapp.R
 import labs.creative.dictornarymvvmapp.databinding.FragmentResultBinding
-import java.util.Locale
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class ResultFragment : Fragment() {
+
+    @Inject lateinit var ttsManager: TtsManager
 
     private var _binding: FragmentResultBinding? = null
     private val binding get() = _binding!!
     private val viewModel: ResultViewModel by viewModels()
     private val args: ResultFragmentArgs by navArgs()
-    private var tts: TextToSpeech? = null
-
-    // Bug 4 fix: guard speak() until TTS is ready
-    private var isTtsReady = false
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -47,7 +45,7 @@ class ResultFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        initTts()
+        ttsManager.init()
         setupClickListeners()
         observeViewModel()
 
@@ -57,25 +55,14 @@ class ResultFragment : Fragment() {
         }
     }
 
-    private fun initTts() {
-        tts = TextToSpeech(requireContext()) { status ->
-            if (status == TextToSpeech.SUCCESS) {
-                tts?.language = Locale.US
-                isTtsReady = true // Bug 4 fix: mark ready only after successful init
-            }
-        }
-    }
-
     private fun setupClickListeners() {
         binding.ibBack.setOnClickListener {
             findNavController().navigateUp()
         }
 
-        // Bug 4 fix: check isTtsReady before speaking
         binding.ibPronunciation.setOnClickListener {
-            if (!isTtsReady) return@setOnClickListener
             val word = viewModel.wordInfo.value?.word ?: return@setOnClickListener
-            tts?.speak(word, TextToSpeech.QUEUE_FLUSH, null, null)
+            ttsManager.speak(word)  // TtsManager internally guards until ready
         }
 
         binding.ibShare.setOnClickListener {
@@ -234,10 +221,8 @@ class ResultFragment : Fragment() {
     }
 
     override fun onDestroyView() {
-        isTtsReady = false
-        tts?.shutdown()
-        tts = null
         super.onDestroyView()
         _binding = null
+        // TtsManager is a Singleton — do NOT shut it down here
     }
 }
