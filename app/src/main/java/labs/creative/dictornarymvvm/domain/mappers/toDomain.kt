@@ -2,6 +2,7 @@ package labs.creative.dictornarymvvm.domain.mappers
 
 import labs.creative.dictornarymvvm.data.remote.model.WordInfoDto
 import labs.creative.dictornarymvvm.data.remote.model.WordSuggestionDto
+import labs.creative.dictornarymvvm.domain.model.WordInfo
 import labs.creative.dictornarymvvm.domain.model.WordSuggestion
 
 fun WordSuggestionDto.toDomain(): WordSuggestion {
@@ -11,14 +12,20 @@ fun WordSuggestionDto.toDomain(): WordSuggestion {
     )
 }
 
-fun WordInfoDto.toDomain(): labs.creative.dictornarymvvm.domain.model.WordInfo {
-    val phoneticsText = phonetics.map { it.text } ?: emptyList()
-    val definitionsText = meanings.flatMap { meaning ->
-        meaning.definitions.map { it.definition }
-    }
-    return labs.creative.dictornarymvvm.domain.model.WordInfo(
-        word = this.word,
-        phonetics = phoneticsText,
-        meanings = definitionsText,
+fun WordInfoDto.toDomain(): WordInfo {
+    val firstMeaning = meanings?.firstOrNull()
+    val firstPhonetic = phonetics?.firstOrNull { !it.text.isNullOrBlank() }
+
+    return WordInfo(
+        word = word,
+        phonetic = firstPhonetic?.text ?: phonetics?.firstOrNull()?.text ?: "",
+        audioUrl = firstPhonetic?.audio?.takeIf { it.isNotBlank() } ?: "",
+        partOfSpeech = firstMeaning?.partOfSpeech ?: "",
+        definitions = firstMeaning?.definitions?.mapNotNull { it.definition } ?: emptyList(),
+        examples = firstMeaning?.definitions?.mapNotNull {
+            it.example?.takeIf { ex -> ex.isNotBlank() }
+        } ?: emptyList(),
+        synonyms = firstMeaning?.synonyms?.filterNotNull() ?: emptyList(),
+        antonyms = firstMeaning?.antonyms?.filterNotNull() ?: emptyList(),
     )
 }

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_background"
+    android:orientation="vertical"
+    android:padding="@dimen/screen_margin">
+
+    <!-- Header -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/space_xl"
+        android:text="@string/saved_words"
+        android:textColor="@color/color_text_primary"
+        android:textSize="@dimen/txtSize_28sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/tvWordCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/space_xs"
+        android:textColor="@color/color_text_secondary"
+        android:textSize="@dimen/txtSize_14sp"
+        tools:text="3 words saved" />
+
+    <!-- Empty State -->
+    <LinearLayout
+        android:id="@+id/llEmptyState"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/saved_empty_title"
+            android:textColor="@color/color_text_primary"
+            android:textSize="@dimen/txtSize_18sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_sm"
+            android:gravity="center"
+            android:text="@string/saved_empty_subtitle"
+            android:textColor="@color/color_text_secondary"
+            android:textSize="@dimen/txtSize_14sp" />
+    </LinearLayout>
+
+    <!-- Saved Words List -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rcvSavedWords"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/space_md"
+        android:layout_weight="1"
+        tools:itemCount="3"
+        tools:listitem="@layout/item_saved_word" />
+
+</LinearLayout>

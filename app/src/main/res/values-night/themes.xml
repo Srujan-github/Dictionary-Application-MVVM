@@ -1,7 +1,18 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
+<resources>
+    <!-- Dark theme overrides -->
     <style name="Base.Theme.Dictornary_MVVM_app" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your dark theme here. -->
-        <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
+        <item name="colorPrimary">@color/color_primary_dark</item>
+        <item name="colorOnPrimary">@color/color_on_surface_dark</item>
+        <item name="colorPrimaryContainer">#2A1E5C</item>
+        <item name="colorOnPrimaryContainer">@color/color_primary_dark</item>
+        <item name="colorSurface">@color/color_surface_dark</item>
+        <item name="colorSurfaceVariant">#231B45</item>
+        <item name="android:colorBackground">@color/color_background_dark</item>
+        <item name="android:windowBackground">@color/color_background_dark</item>
+        <item name="android:statusBarColor">@color/color_background_dark</item>
+        <item name="android:navigationBarColor">@color/color_surface_dark</item>
+        <item name="android:windowLightStatusBar">false</item>
     </style>
+
+    <style name="Theme.Dictornary_MVVM_app" parent="Base.Theme.Dictornary_MVVM_app" />
 </resources>

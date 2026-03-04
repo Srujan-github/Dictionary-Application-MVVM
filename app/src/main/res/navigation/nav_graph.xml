@@ -7,28 +7,69 @@
 
     <fragment
         android:id="@+id/mainFragment"
-        android:name="labs.creative.dictornarymvvm.MainFragment"
-        android:label="fragment_main"
-        tools:layout="@layout/fragment_main" >
+        android:name="labs.creative.dictornarymvvm.ui.fragments.MainFragment"
+        android:label="Home"
+        tools:layout="@layout/fragment_main">
         <action
             android:id="@+id/action_mainFragment_to_searchFragment"
             app:destination="@id/searchFragment" />
         <action
             android:id="@+id/action_mainFragment_to_resultFragment"
-            app:destination="@id/resultFragment" />
+            app:destination="@id/resultFragment">
+            <argument
+                android:name="word"
+                app:argType="string" />
+        </action>
     </fragment>
+
     <fragment
         android:id="@+id/searchFragment"
-        android:name="labs.creative.dictornarymvvm.SearchFragment"
-        android:label="fragment_search"
-        tools:layout="@layout/fragment_search" >
+        android:name="labs.creative.dictornarymvvm.ui.fragments.SearchFragment"
+        android:label="Search"
+        tools:layout="@layout/fragment_search">
         <action
             android:id="@+id/action_searchFragment_to_resultFragment"
-            app:destination="@id/resultFragment" />
+            app:destination="@id/resultFragment">
+            <argument
+                android:name="word"
+                app:argType="string" />
+        </action>
     </fragment>
+
     <fragment
         android:id="@+id/resultFragment"
-        android:name="labs.creative.dictornarymvvm.ResultFragment"
-        android:label="fragment_result"
-        tools:layout="@layout/fragment_result" />
+        android:name="labs.creative.dictornarymvvm.ui.fragments.ResultFragment"
+        android:label="Word Detail"
+        tools:layout="@layout/fragment_result">
+        <argument
+            android:name="word"
+            app:argType="string" />
+        <!-- Self-loop for synonym/antonym chip navigation -->
+        <action
+            android:id="@+id/action_resultFragment_to_resultFragment"
+            app:destination="@id/resultFragment"
+            app:popUpTo="@id/resultFragment"
+            app:popUpToInclusive="false" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/savedWordsFragment"
+        android:name="labs.creative.dictornarymvvm.ui.fragments.SavedWordsFragment"
+        android:label="Saved Words"
+        tools:layout="@layout/fragment_saved">
+        <action
+            android:id="@+id/action_saved_to_result"
+            app:destination="@id/resultFragment">
+            <argument
+                android:name="word"
+                app:argType="string" />
+        </action>
+    </fragment>
+
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="labs.creative.dictornarymvvm.ui.fragments.SettingsFragment"
+        android:label="Settings"
+        tools:layout="@layout/fragment_settings" />
+
 </navigation>

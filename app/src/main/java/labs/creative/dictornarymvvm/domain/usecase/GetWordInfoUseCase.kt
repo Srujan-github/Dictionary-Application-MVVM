@@ -1,7 +1,5 @@
 package labs.creative.dictornarymvvm.domain.usecase
 
-import labs.creative.dictornarymvvm.domain.model.WordInfo
-import labs.creative.dictornarymvvm.domain.repository.WordRepository
 import javax.inject.Inject
 
 class GetWordInfoUseCase @Inject constructor(

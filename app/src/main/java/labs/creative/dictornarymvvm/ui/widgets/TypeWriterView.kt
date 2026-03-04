@@ -7,11 +7,16 @@ import android.util.AttributeSet
 import android.view.ViewTreeObserver
 import androidx.appcompat.widget.AppCompatTextView
 
-@Suppress("TooManyFunctions", "MagicNumber")
+@Suppress("TooManyFunctions")
 class TypeWriterView : AppCompatTextView {
+    companion object {
+        private const val DEFAULT_DELAY_MS = 40L
+        private const val ANIMATION_PAUSE_MS = 1000L
+    }
+
     private var mText: CharSequence? = null
     private var mIndex = 0
-    private var mDelay: Long = 40 // Default delay in ms
+    private var mDelay: Long = DEFAULT_DELAY_MS
     private var isAnimationRunning = false
     private var mAnimationChangeListener: OnAnimationChangeListener? = null
     private var avoidTextOverflowAtEdge = true
@@ -45,12 +50,12 @@ class TypeWriterView : AppCompatTextView {
             animateText(taglines[index]) {
                 mHandler.postDelayed({
                     animateNextTagline(taglines, index + 1)
-                }, mDelay + 1000)
+                }, mDelay + ANIMATION_PAUSE_MS)
             }
         } else {
             mHandler.postDelayed({
                 animateNextTagline(taglines, 0)
-            }, mDelay + 1000)
+            }, mDelay + ANIMATION_PAUSE_MS)
         }
     }
 

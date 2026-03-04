@@ -1,57 +1,243 @@
-package labs.creative.dictornarymvvm
+package labs.creative.dictornarymvvm.ui.fragments
 
+import android.content.Intent
 import android.os.Bundle
+import android.speech.tts.TextToSpeech
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
+import com.google.android.material.card.MaterialCardView
+import com.google.android.material.chip.Chip
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
+import labs.creative.dictornarymvvm.domain.model.WordInfo
+import labs.creative.dictornarymvvm.ui.viewmodel.ResultViewModel
 import labs.creative.dictornarymvvmapp.R
+import labs.creative.dictornarymvvmapp.databinding.FragmentResultBinding
+import java.util.Locale
 
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [ResultFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
+@AndroidEntryPoint
 class ResultFragment : Fragment() {
-    private var param1: String? = null
-    private var param2: String? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
+    private var _binding: FragmentResultBinding? = null
+    private val binding get() = _binding!!
+    private val viewModel: ResultViewModel by viewModels()
+    private val args: ResultFragmentArgs by navArgs()
+    private var tts: TextToSpeech? = null
+
+    // Bug 4 fix: guard speak() until TTS is ready
+    private var isTtsReady = false
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?,
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_result, container, false)
+    ): View {
+        _binding = FragmentResultBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment ResultFragment.
-         */
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            ResultFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        initTts()
+        setupClickListeners()
+        observeViewModel()
+
+        // Bug 3 fix: only fetch if not already loaded (ViewModel survives tab switches)
+        if (viewModel.wordInfo.value == null) {
+            viewModel.fetchWordInfo(args.word)
+        }
+    }
+
+    private fun initTts() {
+        tts = TextToSpeech(requireContext()) { status ->
+            if (status == TextToSpeech.SUCCESS) {
+                tts?.language = Locale.US
+                isTtsReady = true // Bug 4 fix: mark ready only after successful init
+            }
+        }
+    }
+
+    private fun setupClickListeners() {
+        binding.ibBack.setOnClickListener {
+            findNavController().navigateUp()
+        }
+
+        // Bug 4 fix: check isTtsReady before speaking
+        binding.ibPronunciation.setOnClickListener {
+            if (!isTtsReady) return@setOnClickListener
+            val word = viewModel.wordInfo.value?.word ?: return@setOnClickListener
+            tts?.speak(word, TextToSpeech.QUEUE_FLUSH, null, null)
+        }
+
+        binding.ibShare.setOnClickListener {
+            val wordInfo = viewModel.wordInfo.value ?: return@setOnClickListener
+            val shareText = buildString {
+                append(wordInfo.word)
+                if (wordInfo.phonetic.isNotBlank()) append("\n${wordInfo.phonetic}")
+                append("\n\n")
+                wordInfo.definitions.firstOrNull()?.let { append(it) }
+            }
+            val intent = Intent.createChooser(
+                Intent(Intent.ACTION_SEND).apply {
+                    type = "text/plain"
+                    putExtra(Intent.EXTRA_TEXT, shareText)
+                },
+                getString(R.string.share_via),
+            )
+            startActivity(intent)
+        }
+
+        // Bug 2 fix: wire bookmark button to toggle save
+        binding.ibBookmark.setOnClickListener {
+            viewModel.toggleSave()
+        }
+    }
+
+    private fun observeViewModel() {
+        lifecycleScope.launch {
+            viewModel.wordInfo.collectLatest { wordInfo ->
+                wordInfo ?: return@collectLatest
+                bindWordInfo(wordInfo)
+            }
+        }
+
+        lifecycleScope.launch {
+            viewModel.isLoading.collectLatest { isLoading ->
+                binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
+            }
+        }
+
+        lifecycleScope.launch {
+            viewModel.error.collectLatest { error ->
+                if (error != null) {
+                    binding.tvError.text = error
+                    binding.tvError.visibility = View.VISIBLE
+                } else {
+                    binding.tvError.visibility = View.GONE
                 }
             }
+        }
+
+        // Bug 2 fix: observe isSaved to update bookmark icon
+        lifecycleScope.launch {
+            viewModel.isSaved.collectLatest { saved ->
+                val iconRes = if (saved) R.drawable.ic_bookmark_filled else R.drawable.ic_bookmark_outline
+                binding.ibBookmark.setImageResource(iconRes)
+            }
+        }
+    }
+
+    private fun bindWordInfo(info: WordInfo) {
+        binding.tvWord.text = info.word
+        binding.tvPhonetic.text = info.phonetic.ifBlank { "" }
+        binding.chipPartOfSpeech.text = info.partOfSpeech.replaceFirstChar { it.uppercase() }
+        binding.chipPartOfSpeech.visibility =
+            if (info.partOfSpeech.isNotBlank()) View.VISIBLE else View.GONE
+
+        // Definition
+        binding.tvDefinition.text = info.definitions.firstOrNull()
+            ?: getString(R.string.word_not_found)
+
+        // Examples
+        binding.llExamples.removeAllViews()
+        if (info.examples.isNotEmpty()) {
+            binding.tvExamplesLabel.visibility = View.VISIBLE
+            info.examples.forEach { example ->
+                val card = buildExampleCard(example)
+                binding.llExamples.addView(card)
+            }
+        } else {
+            binding.tvExamplesLabel.visibility = View.GONE
+        }
+
+        // Synonyms
+        buildChips(
+            info.synonyms,
+            binding.chipGroupSynonyms,
+            binding.tvSynonymsLabel,
+            bgColor = R.color.color_synonym_bg,
+            textColor = R.color.color_synonym_text
+        )
+
+        // Antonyms
+        buildChips(
+            info.antonyms,
+            binding.chipGroupAntonyms,
+            binding.tvAntonymsLabel,
+            bgColor = R.color.color_antonym_bg,
+            textColor = R.color.color_antonym_text
+        )
+    }
+
+    private fun buildExampleCard(example: String): MaterialCardView {
+        val card = MaterialCardView(requireContext()).apply {
+            radius = resources.getDimension(R.dimen.corner_card_md)
+            cardElevation = resources.getDimension(R.dimen.elevation_card)
+            setCardBackgroundColor(ContextCompat.getColor(requireContext(), R.color.color_surface))
+            val lp = ViewGroup.MarginLayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+            ).also { it.bottomMargin = resources.getDimensionPixelSize(R.dimen.space_sm) }
+            layoutParams = lp
+        }
+        val tv = android.widget.TextView(requireContext()).apply {
+            text = "❝  $example"
+            textSize = 14f
+            setTextColor(ContextCompat.getColor(requireContext(), R.color.color_text_secondary))
+            setPadding(
+                resources.getDimensionPixelSize(R.dimen.space_md),
+                resources.getDimensionPixelSize(R.dimen.space_md),
+                resources.getDimensionPixelSize(R.dimen.space_md),
+                resources.getDimensionPixelSize(R.dimen.space_md),
+            )
+        }
+        card.addView(tv)
+        return card
+    }
+
+    private fun buildChips(
+        words: List<String>,
+        chipGroup: com.google.android.material.chip.ChipGroup,
+        label: View,
+        bgColor: Int,
+        textColor: Int,
+    ) {
+        chipGroup.removeAllViews()
+        if (words.isNotEmpty()) {
+            label.visibility = View.VISIBLE
+            words.forEach { word ->
+                val chip = Chip(requireContext()).apply {
+                    text = word
+                    isCheckable = false
+                    chipBackgroundColor = ContextCompat.getColorStateList(requireContext(), bgColor)
+                    setTextColor(ContextCompat.getColor(requireContext(), textColor))
+                    setOnClickListener {
+                        val action = ResultFragmentDirections
+                            .actionResultFragmentToResultFragment(word)
+                        findNavController().navigate(action)
+                    }
+                }
+                chipGroup.addView(chip)
+            }
+        } else {
+            label.visibility = View.GONE
+        }
+    }
+
+    override fun onDestroyView() {
+        isTtsReady = false
+        tts?.shutdown()
+        tts = null
+        super.onDestroyView()
+        _binding = null
     }
 }

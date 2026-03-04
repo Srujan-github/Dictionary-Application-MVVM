@@ -1,0 +1,25 @@
+> Task :detekt NO-SOURCE
+
+> Task :app:detekt FAILED
+/Users/saisrujanthammishetti/AndroidStudioProjects/Dictionary-Application-MVVM/app/src/main/java/labs/creative/dictornarymvvm/ui/widgets/TypeWriterView.kt:10:7: Class 'TypeWriterView' with '12' functions detected. Defined threshold inside classes is set to '11' [TooManyFunctions]
+/Users/saisrujanthammishetti/AndroidStudioProjects/Dictionary-Application-MVVM/app/src/main/java/labs/creative/dictornarymvvm/SearchViewModel.kt:35:22: The caught exception is too generic. Prefer catching specific exceptions to the case that is currently handled. [TooGenericExceptionCaught]
+/Users/saisrujanthammishetti/AndroidStudioProjects/Dictionary-Application-MVVM/app/src/main/java/labs/creative/dictornarymvvm/core/utils/Resources.kt:1:1: File 'Resources.kt' contains a single class and possibly also extension functions for that class and should be named same after that class 'Resource.kt' [Filename]
+/Users/saisrujanthammishetti/AndroidStudioProjects/Dictionary-Application-MVVM/app/src/main/java/labs/creative/dictornarymvvm/core/BaseFragment.kt:5:33: Unnecessary block ("{}") [NoEmptyClassBody]
+/Users/saisrujanthammishetti/AndroidStudioProjects/Dictionary-Application-MVVM/app/src/main/java/labs/creative/dictornarymvvm/MainFragment.kt:33:1: Exceeded max line length (120) [MaximumLineLength]
+/Users/saisrujanthammishetti/AndroidStudioProjects/Dictionary-Application-MVVM/app/src/main/java/labs/creative/dictornarymvvm/domain/mappers/toDomain.kt:1:1: File name 'toDomain.kt' should conform PascalCase [Filename]
+/Users/saisrujanthammishetti/AndroidStudioProjects/Dictionary-Application-MVVM/app/src/main/java/labs/creative/dictornarymvvm/core/utils/Resources.kt:3:14: The file name 'Resources' does not match the name of the single top-level declaration 'Resource'. [MatchingDeclarationName]
+/Users/saisrujanthammishetti/AndroidStudioProjects/Dictionary-Application-MVVM/app/src/main/java/labs/creative/dictornarymvvm/ui/widgets/TypeWriterView.kt:13:32: This expression contains a magic number. Consider defining it to a well named constant. [MagicNumber]
+/Users/saisrujanthammishetti/AndroidStudioProjects/Dictionary-Application-MVVM/app/src/main/java/labs/creative/dictornarymvvm/ui/widgets/TypeWriterView.kt:47:29: This expression contains a magic number. Consider defining it to a well named constant. [MagicNumber]
+/Users/saisrujanthammishetti/AndroidStudioProjects/Dictionary-Application-MVVM/app/src/main/java/labs/creative/dictornarymvvm/ui/widgets/TypeWriterView.kt:52:25: This expression contains a magic number. Consider defining it to a well named constant. [MagicNumber]
+/Users/saisrujanthammishetti/AndroidStudioProjects/Dictionary-Application-MVVM/app/src/main/java/labs/creative/dictornarymvvm/ResultFragment.kt:10:1: Forbidden TODO todo marker in comment, please do the changes. [ForbiddenComment]
+/Users/saisrujanthammishetti/AndroidStudioProjects/Dictionary-Application-MVVM/app/src/main/java/labs/creative/dictornarymvvm/ResultFragment.kt:21:5: Forbidden TODO todo marker in comment, please do the changes. [ForbiddenComment]
+/Users/saisrujanthammishetti/AndroidStudioProjects/Dictionary-Application-MVVM/app/src/main/java/labs/creative/dictornarymvvm/ResultFragment.kt:51:9: Forbidden TODO todo marker in comment, please do the changes. [ForbiddenComment]
+/Users/saisrujanthammishetti/AndroidStudioProjects/Dictionary-Application-MVVM/app/src/main/java/labs/creative/dictornarymvvm/MainFragment.kt:33:1: Line detected, which is longer than the defined maximum line length in the code style. [MaxLineLength]
+
+
+Deprecated Gradle features were used in this build, making it incompatible with Gradle 9.0.
+
+You can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.
+
+For more on this, please refer to https://docs.gradle.org/8.7/userguide/command_line_interface.html#sec:command_line_warnings in the Gradle documentation.
+1 actionable task: 1 executed

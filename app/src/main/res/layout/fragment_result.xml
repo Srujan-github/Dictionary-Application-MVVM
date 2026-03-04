@@ -1,14 +1,228 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ResultFragment">
+    android:background="@color/color_background">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_result_fragment" />
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/space_xxl"
+        tools:context=".ui.fragments.ResultFragment">
 
-</FrameLayout>
+        <!-- ── Toolbar ── -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingStart="@dimen/space_sm"
+            android:paddingTop="@dimen/space_md"
+            android:paddingEnd="@dimen/screen_margin">
+
+            <ImageButton
+                android:id="@+id/ibBack"
+                android:layout_width="@dimen/icon_bg_size"
+                android:layout_height="@dimen/icon_bg_size"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@string/back"
+                android:src="@drawable/ic_back_arrow"
+                app:tint="@color/color_text_primary" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="1" />
+
+            <ImageButton
+                android:id="@+id/ibShare"
+                android:layout_width="@dimen/icon_bg_size"
+                android:layout_height="@dimen/icon_bg_size"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@string/share_btn"
+                android:src="@drawable/ic_share"
+                android:layout_marginEnd="@dimen/space_xs"
+                app:tint="@color/color_text_secondary" />
+
+            <ImageButton
+                android:id="@+id/ibBookmark"
+                android:layout_width="@dimen/icon_bg_size"
+                android:layout_height="@dimen/icon_bg_size"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@string/bookmark_btn"
+                android:src="@drawable/ic_bookmark_outline"
+                app:tint="@color/color_text_secondary" />
+        </LinearLayout>
+
+        <!-- ── Word Title ── -->
+        <TextView
+            android:id="@+id/tvWord"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/screen_margin"
+            android:layout_marginTop="@dimen/space_md"
+            android:textColor="@color/color_text_primary"
+            android:textSize="@dimen/txtSize_32sp"
+            android:textStyle="bold"
+            tools:text="Ephemeral" />
+
+        <!-- ── Pronunciation Row ── -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/screen_margin"
+            android:layout_marginTop="@dimen/space_sm"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/ibPronunciation"
+                android:layout_width="@dimen/icon_bg_size"
+                android:layout_height="@dimen/icon_bg_size"
+                android:background="@drawable/bg_rank_badge"
+                android:contentDescription="@string/pronunciation_btn"
+                android:src="@drawable/ic_volume_up"
+                android:padding="@dimen/space_xs"
+                app:tint="@color/color_primary" />
+
+            <TextView
+                android:id="@+id/tvPhonetic"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/space_sm"
+                android:textColor="@color/color_text_secondary"
+                android:textSize="@dimen/txtSize_16sp"
+                tools:text="/ih-FEM-er-uhl/" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipPartOfSpeech"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/space_sm"
+                android:checkable="false"
+                android:clickable="false"
+                app:chipBackgroundColor="@color/color_primary_container"
+                app:chipMinHeight="28dp"
+                app:chipCornerRadius="@dimen/corner_chip"
+                tools:text="adjective" />
+        </LinearLayout>
+
+        <!-- ── DEFINITION ── -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/screen_margin"
+            android:layout_marginTop="@dimen/space_lg"
+            android:text="@string/definition_label"
+            style="@style/TextAppearance.Lexicon.SectionLabel" />
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardDefinition"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/screen_margin"
+            android:layout_marginTop="@dimen/space_sm"
+            android:layout_marginEnd="@dimen/screen_margin"
+            app:cardBackgroundColor="@color/color_surface"
+            app:cardCornerRadius="@dimen/corner_card_md"
+            app:cardElevation="@dimen/elevation_card"
+            app:strokeWidth="0dp">
+
+            <TextView
+                android:id="@+id/tvDefinition"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/space_md"
+                android:textColor="@color/color_text_primary"
+                android:textSize="@dimen/txtSize_16sp"
+                tools:text="Lasting for a very short time. Something that is fleeting, transitory, or brief." />
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- ── EXAMPLES ── -->
+        <TextView
+            android:id="@+id/tvExamplesLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/screen_margin"
+            android:layout_marginTop="@dimen/space_lg"
+            android:text="@string/examples_label"
+            android:visibility="gone"
+            style="@style/TextAppearance.Lexicon.SectionLabel" />
+
+        <LinearLayout
+            android:id="@+id/llExamples"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/screen_margin"
+            android:layout_marginTop="@dimen/space_sm"
+            android:layout_marginEnd="@dimen/screen_margin"
+            android:orientation="vertical" />
+
+        <!-- ── SYNONYMS ── -->
+        <TextView
+            android:id="@+id/tvSynonymsLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/screen_margin"
+            android:layout_marginTop="@dimen/space_lg"
+            android:text="@string/synonyms_label"
+            android:visibility="gone"
+            style="@style/TextAppearance.Lexicon.SectionLabel" />
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/chipGroupSynonyms"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/screen_margin"
+            android:layout_marginTop="@dimen/space_sm"
+            android:layout_marginEnd="@dimen/screen_margin"
+            app:chipSpacingHorizontal="@dimen/space_sm" />
+
+        <!-- ── ANTONYMS ── -->
+        <TextView
+            android:id="@+id/tvAntonymsLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/screen_margin"
+            android:layout_marginTop="@dimen/space_lg"
+            android:text="@string/antonyms_label"
+            android:visibility="gone"
+            style="@style/TextAppearance.Lexicon.SectionLabel" />
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/chipGroupAntonyms"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/screen_margin"
+            android:layout_marginTop="@dimen/space_sm"
+            android:layout_marginEnd="@dimen/screen_margin"
+            app:chipSpacingHorizontal="@dimen/space_sm" />
+
+        <!-- ── Loading / Error ── -->
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/space_xl"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/tvError"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/space_xl"
+            android:layout_marginStart="@dimen/screen_margin"
+            android:layout_marginEnd="@dimen/screen_margin"
+            android:textColor="@color/color_error"
+            android:textSize="@dimen/txtSize_16sp"
+            android:visibility="gone"
+            tools:text="@string/word_not_found" />
+
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>

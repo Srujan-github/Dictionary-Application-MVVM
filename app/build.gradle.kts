@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.jetbrains.kotlin.android)
     id("com.google.dagger.hilt.android")
     alias(libs.plugins.ksp)
+    alias(libs.plugins.navigation.safe.args)
 }
 
 android {
@@ -25,8 +26,6 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
-        }
-        release {
             buildConfigField("String", "WORD_SEARCH_URL", "\"https://api.datamuse.com/\"")
             buildConfigField("String", "DICTIONARY_SEARCH_URL", "\"https://api.dictionaryapi.dev/api/v2/entries/en/\"")
         }
@@ -63,8 +62,6 @@ dependencies {
     implementation(libs.converter.gson)
     implementation(libs.logging.interceptor)
     implementation(libs.okhttp)
-    implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
-    implementation("com.google.android.material:material:1.12.0")
     // Views/Fragments integration
     implementation(libs.androidx.navigation.fragment)
     implementation(libs.androidx.navigation.ui)
@@ -81,11 +78,27 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.core)
     ksp(libs.hilt.android.compiler)
 
-    implementation("androidx.hilt:hilt-navigation:1.2.0")
-    implementation("androidx.hilt:hilt-navigation-fragment:1.2.0")
+    implementation(libs.androidx.hilt.navigation)
+    implementation(libs.androidx.hilt.navigation.fragment)
+
+    // Room
+    implementation(libs.androidx.room.runtime)
+    implementation(libs.androidx.room.ktx)
+    ksp(libs.androidx.room.compiler)
+
+    // DataStore
+    implementation(libs.androidx.datastore.preferences)
 
     //dateKT
     detektPlugins(libs.detekt.formatting)
+}
+
+// Force-pin core-ktx to avoid transitive bumps to 1.16.0 (needs compileSdk 35 + AGP 8.6)
+configurations.all {
+    resolutionStrategy {
+        force("androidx.core:core:1.13.1")
+        force("androidx.core:core-ktx:1.13.1")
+    }
 }
 
 detekt {
