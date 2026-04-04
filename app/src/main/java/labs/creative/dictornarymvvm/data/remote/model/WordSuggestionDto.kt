@@ -3,5 +3,5 @@ package labs.creative.dictornarymvvm.data.remote.model
 data class WordSuggestionDto(
     val word: String,
     val score: Int,
-    val tags: List<String>?
+    val tags: List<String>?,
 )

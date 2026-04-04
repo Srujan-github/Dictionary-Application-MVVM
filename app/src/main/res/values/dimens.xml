@@ -1,5 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Text sizes -->
+    <dimen name="txtSize_12sp">12sp</dimen>
+    <dimen name="txtSize_14sp">14sp</dimen>
     <dimen name="txtSize_16sp">16sp</dimen>
+    <dimen name="txtSize_18sp">18sp</dimen>
+    <dimen name="txtSize_20sp">20sp</dimen>
+    <dimen name="txtSize_22sp">22sp</dimen>
     <dimen name="txtSize_26sp">26sp</dimen>
+    <dimen name="txtSize_28sp">28sp</dimen>
+    <dimen name="txtSize_32sp">32sp</dimen>
+
+    <!-- Spacing scale (8dp base unit) -->
+    <dimen name="space_xs">4dp</dimen>
+    <dimen name="space_sm">8dp</dimen>
+    <dimen name="space_md">16dp</dimen>
+    <dimen name="space_lg">24dp</dimen>
+    <dimen name="space_xl">32dp</dimen>
+    <dimen name="space_xxl">48dp</dimen>
+
+    <!-- Corner radii -->
+    <dimen name="corner_pill">28dp</dimen>
+    <dimen name="corner_card_lg">20dp</dimen>
+    <dimen name="corner_card_md">16dp</dimen>
+    <dimen name="corner_card_sm">12dp</dimen>
+    <dimen name="corner_chip">20dp</dimen>
+    <dimen name="corner_fab">12dp</dimen>
+    <dimen name="corner_icon_bg">50dp</dimen>
+
+    <!-- Component sizes -->
+    <dimen name="search_bar_height">56dp</dimen>
+    <dimen name="bottom_nav_height">64dp</dimen>
+    <dimen name="icon_size_sm">20dp</dimen>
+    <dimen name="icon_size_md">24dp</dimen>
+    <dimen name="icon_size_lg">28dp</dimen>
+    <dimen name="icon_bg_size">40dp</dimen>
+    <dimen name="rank_badge_size">36dp</dimen>
+    <dimen name="fab_size">48dp</dimen>
+
+    <!-- Elevation -->
+    <dimen name="elevation_card">2dp</dimen>
+    <dimen name="elevation_search">4dp</dimen>
+    <dimen name="elevation_bottom_nav">8dp</dimen>
+
+    <!-- Screen horizontal margin -->
+    <dimen name="screen_margin">16dp</dimen>
 </resources>

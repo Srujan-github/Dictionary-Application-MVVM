@@ -6,9 +6,7 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import labs.creative.dictornarymvvm.data.remote.api.DatamuseApiService
 import labs.creative.dictornarymvvm.data.remote.api.DictionaryApiService
-import labs.creative.dictornarymvvm.domain.usecase.GetWordSuggestionsUseCase
 import labs.creative.dictornarymvvmapp.BuildConfig
-
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -19,7 +17,6 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
-
 
     @Singleton
     @Provides
@@ -55,21 +52,9 @@ object NetworkModule {
 
     @Singleton
     @Provides
-    fun provideWordInfoUseCase(repository: labs.creative.dictornarymvvm.domain.repository.WordRepository): labs.creative.dictornarymvvm.domain.usecase.GetWordInfoUseCase {
-        return labs.creative.dictornarymvvm.domain.usecase.GetWordInfoUseCase(repository)
-    }
-
-    @Singleton
-    @Provides
-    fun provideWordSuggestionUseCase(repository: labs.creative.dictornarymvvm.domain.repository.WordRepository): GetWordSuggestionsUseCase {
-        return GetWordSuggestionsUseCase(repository)
-    }
-
-    @Singleton
-    @Provides
     fun provideHttpLogger(): HttpLoggingInterceptor {
         return HttpLoggingInterceptor().apply {
             level = HttpLoggingInterceptor.Level.BODY
-    }
+        }
     }
 }

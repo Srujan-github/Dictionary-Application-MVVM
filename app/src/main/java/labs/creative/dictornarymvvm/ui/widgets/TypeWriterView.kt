@@ -6,16 +6,42 @@ import android.os.Looper
 import android.util.AttributeSet
 import android.view.ViewTreeObserver
 import androidx.appcompat.widget.AppCompatTextView
+import kotlin.math.max
 
+/**
+ * A [AppCompatTextView] that types out text character-by-character,
+ * cycling through a list of taglines indefinitely.
+ *
+ * Call [animateTaglines] once after the view is laid out to start the loop.
+ * The animation automatically re-cycles from the first tagline when the last
+ * one finishes, and pauses [ANIMATION_PAUSE_MS] between taglines for readability.
+ *
+ * The internal [Handler] posts to the main thread only; there are no background
+ * threads. Callbacks and listeners are cleaned up in [stopAnimation] to avoid
+ * leaks when the hosting view is detached.
+ */
+@Suppress("TooManyFunctions")
 class TypeWriterView : AppCompatTextView {
+
+    companion object {
+        private const val DEFAULT_CHAR_DELAY_MS = 40L
+        private const val ANIMATION_PAUSE_MS = 1_000L
+        private const val EMPTY_START_INDEX = 0
+        private const val FIRST_TAGLINE_INDEX = 0
+    }
+
     private var mText: CharSequence? = null
-    private var mIndex = 0
-    private var mDelay: Long = 40 // Default delay in ms
+    private var mIndex = EMPTY_START_INDEX
+    private var mDelay: Long = DEFAULT_CHAR_DELAY_MS
     private var isAnimationRunning = false
     private var mAnimationChangeListener: OnAnimationChangeListener? = null
     private var avoidTextOverflowAtEdge = true
+
+    /** Kept as a field so we can remove it before re-adding on the next call. */
     private var globalLayoutListener: ViewTreeObserver.OnGlobalLayoutListener? = null
+
     private val mHandler = Handler(Looper.getMainLooper())
+
     private val characterAdder = object : Runnable {
         override fun run() {
             text = mText?.subSequence(0, mIndex++)
@@ -25,8 +51,7 @@ class TypeWriterView : AppCompatTextView {
             } else {
                 isAnimationRunning = false
                 pingAnimationEnded()
-                // Trigger next animation after current one finishes
-                onAnimationEnd()
+                onSequenceEnd()
             }
         }
     }
@@ -34,37 +59,22 @@ class TypeWriterView : AppCompatTextView {
     constructor(context: Context) : super(context)
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
 
+    // ─── Public API ───────────────────────────────────────────────────────────
 
-
-    // Start animating all the taglines one after another
+    /** Starts cycling through [taglines] indefinitely. */
     fun animateTaglines(taglines: List<String>) {
-        animateNextTagline( taglines, 0)
-    }
-
-    private fun animateNextTagline( taglines: List<String>,index: Int) {
-        if (index < taglines.size) {
-            animateText(taglines[index]) {
-                mHandler.postDelayed({
-                    animateNextTagline(taglines, index + 1)
-                }, mDelay + 1000)
-            }
-        } else {
-            mHandler.postDelayed({
-                animateNextTagline(taglines, 0)
-            }, mDelay + 1000)
-        }
+        animateNextTagline(taglines, FIRST_TAGLINE_INDEX)
     }
 
     fun animateText(text: CharSequence, onEnd: () -> Unit) {
         generateText(text.toString())
-        mIndex = 0
+        mIndex = EMPTY_START_INDEX
         setText("")
         mHandler.removeCallbacks(characterAdder)
         mHandler.postDelayed(characterAdder, mDelay)
         setOnAnimationChangeListener(object : OnAnimationChangeListener {
             override fun onAnimationEnd() {
-
-                onEnd() // Execute onEnd when animation ends
+                onEnd()
             }
         })
     }
@@ -78,46 +88,76 @@ class TypeWriterView : AppCompatTextView {
         }
     }
 
-    fun isAnimationRunning(): Boolean {
-        return isAnimationRunning
-    }
+    fun isAnimationRunning(): Boolean = isAnimationRunning
 
-    fun isTextInitialised(): Boolean {
-        return mText != null
-    }
+    fun isTextInitialised(): Boolean = mText != null
 
-    // To Explicitly Change the Delay
     fun setCharacterDelay(millis: Long) {
         mDelay = millis
     }
 
+    fun avoidTextOverflowAtEdge(avoid: Boolean) {
+        this.avoidTextOverflowAtEdge = avoid
+    }
+
+    fun interface OnAnimationChangeListener {
+        fun onAnimationEnd()
+    }
+
+    fun setOnAnimationChangeListener(listener: OnAnimationChangeListener?) {
+        mAnimationChangeListener = listener
+    }
+
+    // ─── Internal ─────────────────────────────────────────────────────────────
+
+    private fun animateNextTagline(taglines: List<String>, index: Int) {
+        if (index < taglines.size) {
+            animateText(taglines[index]) {
+                mHandler.postDelayed(
+                    { animateNextTagline(taglines, index + 1) },
+                    mDelay + ANIMATION_PAUSE_MS,
+                )
+            }
+        } else {
+            mHandler.postDelayed(
+                { animateNextTagline(taglines, FIRST_TAGLINE_INDEX) },
+                mDelay + ANIMATION_PAUSE_MS,
+            )
+        }
+    }
+
     private fun generateText(inpText: String) {
         if (avoidTextOverflowAtEdge) {
-            globalLayoutListener = ViewTreeObserver.OnGlobalLayoutListener {
+            // Remove any previously registered listener before adding a new one
+            // to prevent duplicate callbacks (memory / logic leak).
+            globalLayoutListener?.let { viewTreeObserver.removeOnGlobalLayoutListener(it) }
+
+            val newListener = ViewTreeObserver.OnGlobalLayoutListener {
                 mText = generateFormattedSequence(inpText)
                 viewTreeObserver.removeOnGlobalLayoutListener(globalLayoutListener)
+                globalLayoutListener = null
             }
-            viewTreeObserver.addOnGlobalLayoutListener(globalLayoutListener)
+            globalLayoutListener = newListener
+            viewTreeObserver.addOnGlobalLayoutListener(newListener)
         }
         mText = inpText
     }
 
-    fun generateFormattedSequence(mText: String): String {
-        val words = mText.split(" ").toTypedArray()
+    fun generateFormattedSequence(inputText: String): String {
+        val words = inputText.split(" ").toTypedArray()
         val viewWidth = measuredWidth
         val finalSequence = StringBuilder()
 
         for (word in words) {
             val temp = finalSequence.substring(
-                Math.max(finalSequence.lastIndexOf("\n"), 0)
+                max(finalSequence.lastIndexOf("\n"), 0),
             ) + " " + word
             val textWidth = paint.measureText(temp)
-            if (textWidth >= viewWidth)
-                finalSequence.append("\n").append(word)
-            else if (finalSequence.isEmpty())
-                finalSequence.append(word)
-            else
-                finalSequence.append(" ").append(word)
+            when {
+                textWidth >= viewWidth -> finalSequence.append("\n").append(word)
+                finalSequence.isEmpty() -> finalSequence.append(word)
+                else -> finalSequence.append(" ").append(word)
+            }
         }
         return finalSequence.toString()
     }
@@ -126,15 +166,7 @@ class TypeWriterView : AppCompatTextView {
         mAnimationChangeListener?.onAnimationEnd()
     }
 
-    fun avoidTextOverflowAtEdge(avoidTextOverflowAtEdge: Boolean) {
-        this.avoidTextOverflowAtEdge = avoidTextOverflowAtEdge
-    }
-
-    fun interface OnAnimationChangeListener {
-        fun onAnimationEnd()
-    }
-
-    fun setOnAnimationChangeListener(onAnimationChangeListener: OnAnimationChangeListener?) {
-        mAnimationChangeListener = onAnimationChangeListener
+    private fun onSequenceEnd() {
+        // Hook for subclasses or future use
     }
 }

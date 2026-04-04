@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/space_sm"
+    app:cardBackgroundColor="@color/color_surface"
+    app:cardCornerRadius="@dimen/corner_card_md"
+    app:cardElevation="@dimen/elevation_card"
+    app:strokeWidth="0dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/space_md">
+
+        <!-- Rank Badge -->
+        <TextView
+            android:id="@+id/tvRank"
+            android:layout_width="@dimen/rank_badge_size"
+            android:layout_height="@dimen/rank_badge_size"
+            android:background="@drawable/bg_rank_badge"
+            android:gravity="center"
+            android:textColor="@color/color_primary"
+            android:textSize="@dimen/txtSize_14sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="01" />
+
+        <!-- Word and description -->
+        <LinearLayout
+            android:id="@+id/llWordInfo"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/space_md"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/ivArrow"
+            app:layout_constraintStart_toEndOf="@+id/tvRank"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/tvWord"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/color_text_primary"
+                android:textSize="@dimen/txtSize_16sp"
+                android:textStyle="bold"
+                tools:text="Serendipity" />
+
+            <TextView
+                android:id="@+id/tvWordDescription"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_xs"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textColor="@color/color_text_secondary"
+                android:textSize="@dimen/txtSize_14sp"
+                tools:text="The occurrence of events by chance in a..." />
+        </LinearLayout>
+
+        <!-- Trailing arrow -->
+        <ImageView
+            android:id="@+id/ivArrow"
+            android:layout_width="@dimen/icon_size_md"
+            android:layout_height="@dimen/icon_size_md"
+            android:contentDescription="@null"
+            android:src="@drawable/ic_arrow_forward"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:tint="@color/color_text_hint" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</com.google.android.material.card.MaterialCardView>

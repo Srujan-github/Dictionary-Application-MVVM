@@ -3,30 +3,34 @@ plugins {
     alias(libs.plugins.jetbrains.kotlin.android)
     id("com.google.dagger.hilt.android")
     alias(libs.plugins.ksp)
+    alias(libs.plugins.navigation.safe.args)
 }
 
 android {
     namespace = "labs.creative.dictornarymvvmapp"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "labs.creative.dictornarymvvmapp"
         minSdk = 24
-        targetSdk = 34
-        versionCode = 1
-        versionName = "1.0"
+        targetSdk = 35
+        versionCode = 2
+        versionName = "1.1"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
         release {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
+            isShrinkResources = true
+            // Upload native debug symbols to Play Console for crash symbolication
+            ndk {
+                debugSymbolLevel = "FULL"
+            }
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
-        }
-        release {
             buildConfigField("String", "WORD_SEARCH_URL", "\"https://api.datamuse.com/\"")
             buildConfigField("String", "DICTIONARY_SEARCH_URL", "\"https://api.dictionaryapi.dev/api/v2/entries/en/\"")
         }
@@ -35,9 +39,9 @@ android {
             buildConfigField("String", "DICTIONARY_SEARCH_URL", "\"https://api.dictionaryapi.dev/api/v2/entries/en/\"")
         }
     }
-    buildFeatures{
-         viewBinding = true
-         buildConfig = true
+    buildFeatures {
+        viewBinding = true
+        buildConfig = true
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
@@ -63,8 +67,6 @@ dependencies {
     implementation(libs.converter.gson)
     implementation(libs.logging.interceptor)
     implementation(libs.okhttp)
-    implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
-    implementation("com.google.android.material:material:1.12.0")
     // Views/Fragments integration
     implementation(libs.androidx.navigation.fragment)
     implementation(libs.androidx.navigation.ui)
@@ -77,11 +79,26 @@ dependencies {
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
     testImplementation(libs.junit)
+    testImplementation(libs.mockk)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     ksp(libs.hilt.android.compiler)
 
+    implementation(libs.androidx.hilt.navigation)
+    implementation(libs.androidx.hilt.navigation.fragment)
+
+    // Room
+    implementation(libs.androidx.room.runtime)
+    implementation(libs.androidx.room.ktx)
+    ksp(libs.androidx.room.compiler)
+
+    // DataStore
+    implementation(libs.androidx.datastore.preferences)
+
     //dateKT
     detektPlugins(libs.detekt.formatting)
+}
 
+detekt {
+    autoCorrect = true
 }
