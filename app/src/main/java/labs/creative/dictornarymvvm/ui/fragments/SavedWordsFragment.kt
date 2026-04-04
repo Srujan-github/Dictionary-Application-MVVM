@@ -11,6 +11,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -49,8 +50,17 @@ class SavedWordsFragment : Fragment() {
         ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
             override fun onMove(rv: RecyclerView, vh: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder) = false
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                val word = adapter.currentList[viewHolder.adapterPosition].word
-                viewModel.deleteWord(word)
+                @Suppress("DEPRECATION")
+                val position = viewHolder.adapterPosition
+                if (position == RecyclerView.NO_POSITION) return
+                val savedWordItem = adapter.currentList[position]
+                viewModel.deleteWord(savedWordItem.word)
+
+                Snackbar.make(binding.root, "${savedWordItem.word} deleted", Snackbar.LENGTH_LONG)
+                    .setAction("Undo") {
+                        viewModel.saveWord(savedWordItem)
+                    }
+                    .show()
             }
         }).attachToRecyclerView(binding.rcvSavedWords)
     }
@@ -61,8 +71,7 @@ class SavedWordsFragment : Fragment() {
                 adapter.submitList(words)
                 binding.tvWordCount.text = when (words.size) {
                     0 -> getString(R.string.zero_words_saved)
-                    1 -> getString(R.string.one_word_saved)
-                    else -> getString(R.string.n_words_saved, words.size)
+                    else -> resources.getQuantityString(R.plurals.n_words_saved, words.size, words.size)
                 }
                 val isEmpty = words.isEmpty()
                 binding.llEmptyState.visibility = if (isEmpty) View.VISIBLE else View.GONE

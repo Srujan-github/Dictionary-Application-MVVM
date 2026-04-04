@@ -63,7 +63,14 @@ class SearchViewModel @Inject constructor(
                                 } else {
                                     emit(SearchUiState.Success(results))
                                 }
-                            } catch (e: Exception) {
+                            } catch (e: java.io.IOException) {
+                                timber.log.Timber.e(e, "Network error during search")
+                                emit(SearchUiState.Error("Network error: Please check your connection."))
+                            } catch (e: retrofit2.HttpException) {
+                                timber.log.Timber.e(e, "Server error: ${e.code()}")
+                                emit(SearchUiState.Error("Server error: ${e.message()}"))
+                            } catch (@Suppress("TooGenericExceptionCaught") e: Exception) {
+                                timber.log.Timber.e(e, "Unexpected error during search")
                                 emit(SearchUiState.Error(e.localizedMessage ?: "An unexpected error occurred"))
                             }
                         }

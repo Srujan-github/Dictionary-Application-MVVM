@@ -10,12 +10,14 @@ import kotlinx.coroutines.launch
 import labs.creative.dictornarymvvm.domain.model.SavedWord
 import labs.creative.dictornarymvvm.domain.usecase.DeleteSavedWordUseCase
 import labs.creative.dictornarymvvm.domain.usecase.GetSavedWordsUseCase
+import labs.creative.dictornarymvvm.domain.usecase.SaveWordUseCase
 import javax.inject.Inject
 
 @HiltViewModel
 class SavedWordsViewModel @Inject constructor(
     getSavedWordsUseCase: GetSavedWordsUseCase,
     private val deleteSavedWordUseCase: DeleteSavedWordUseCase,
+    private val saveWordUseCase: SaveWordUseCase,
 ) : ViewModel() {
 
     companion object {
@@ -32,6 +34,12 @@ class SavedWordsViewModel @Inject constructor(
     fun deleteWord(word: String) {
         viewModelScope.launch {
             deleteSavedWordUseCase(word)
+        }
+    }
+
+    fun saveWord(word: SavedWord) {
+        viewModelScope.launch {
+            saveWordUseCase(word)
         }
     }
 }

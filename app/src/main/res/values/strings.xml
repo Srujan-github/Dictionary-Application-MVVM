@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Lexicon</string>
+    <string name="app_name">Modern-Day Dictionary</string>
 
     <!-- Home Screen -->
     <string name="discover_words">Discover Words</string>
@@ -36,8 +36,10 @@
     <!-- Saved Words Screen -->
     <string name="saved_words">Saved Words</string>
     <string name="zero_words_saved">No words saved</string>
-    <string name="one_word_saved">1 word saved</string>
-    <string name="n_words_saved">%d words saved</string>
+    <plurals name="n_words_saved">
+        <item quantity="one">%d word saved</item>
+        <item quantity="other">%d words saved</item>
+    </plurals>
     <string name="saved_empty_title">No saved words yet.</string>
     <string name="saved_empty_subtitle">Search and bookmark words to build your vocabulary!</string>
 
@@ -52,11 +54,11 @@
     <string name="language_value">English</string>
     <string name="daily_word">Daily Word</string>
     <string name="daily_word_subtitle">Get a new word every day</string>
-    <string name="about_lexicon">About Lexicon</string>
+    <string name="about_lexicon">About Modern-Day Dictionary</string>
     <string name="privacy_policy">Privacy Policy</string>
     <string name="send_feedback">Send Feedback</string>
     <string name="rate_app">Rate the App</string>
-    <string name="app_version">Lexicon v%s</string>
+    <string name="app_version">Modern-Day Dictionary v%s</string>
 
     <!-- Placeholders (legacy) -->
     <string name="hello_main_fragment">Discovering words…</string>

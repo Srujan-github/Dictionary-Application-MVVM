@@ -3,9 +3,7 @@ package labs.creative.dictornarymvvm.ui.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.launch
+import labs.creative.dictornarymvvm.data.preferences.UserPreferencesRepository
 import labs.creative.dictornarymvvm.domain.model.SavedWord
 import labs.creative.dictornarymvvm.domain.model.WordInfo
 import labs.creative.dictornarymvvm.domain.usecase.DeleteSavedWordUseCase
@@ -13,6 +11,9 @@ import labs.creative.dictornarymvvm.domain.usecase.GetWordInfoUseCase
 import labs.creative.dictornarymvvm.domain.usecase.IsWordSavedUseCase
 import labs.creative.dictornarymvvm.domain.usecase.SaveWordUseCase
 import javax.inject.Inject
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
 
 @HiltViewModel
 class ResultViewModel @Inject constructor(
@@ -20,6 +21,7 @@ class ResultViewModel @Inject constructor(
     private val saveWordUseCase: SaveWordUseCase,
     private val deleteWordUseCase: DeleteSavedWordUseCase,
     private val isWordSavedUseCase: IsWordSavedUseCase,
+    private val userPreferencesRepository: UserPreferencesRepository,
 ) : ViewModel() {
 
     private val _wordInfo = MutableStateFlow<WordInfo?>(null)
@@ -42,12 +44,14 @@ class ResultViewModel @Inject constructor(
             try {
                 val results = getWordInfoUseCase(word)
                 _wordInfo.value = results.firstOrNull()
+                _wordInfo.value?.word?.let {
+                    userPreferencesRepository.addRecentWord(it)
+                }
                 // Check if already saved
                 _isSaved.value = isWordSavedUseCase(word)
             } catch (e: Exception) {
                 e.printStackTrace()
                 _error.value = e.localizedMessage ?: "Could not load word information."
-                throw e
             } finally {
                 _isLoading.value = false
             }

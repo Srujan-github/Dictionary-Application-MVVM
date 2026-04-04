@@ -96,7 +96,7 @@ class MainFragment : Fragment() {
             val chip = Chip(requireContext()).apply {
                 text = word
                 isCheckable = false
-                chipBackgroundColor = ContextCompat.getColorStateList(requireContext(), R.color.white)
+                chipBackgroundColor = ContextCompat.getColorStateList(requireContext(), R.color.color_surface)
                 setTextColor(ContextCompat.getColor(requireContext(), R.color.color_text_primary))
                 chipStrokeColor = ContextCompat.getColorStateList(requireContext(), R.color.color_divider)
                 chipStrokeWidth = resources.getDimension(R.dimen.space_xs) / CHIP_STROKE_DIVISOR

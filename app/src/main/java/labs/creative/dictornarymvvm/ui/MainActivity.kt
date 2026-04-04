@@ -3,12 +3,11 @@ package labs.creative.dictornarymvvm.ui
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import labs.creative.dictornarymvvm.data.preferences.UserPreferencesRepository
 import labs.creative.dictornarymvvmapp.databinding.ActivityMainBinding
 import javax.inject.Inject
@@ -22,7 +21,18 @@ class MainActivity : AppCompatActivity() {
     private val binding get() = _binding
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        // 1. super.onCreate() MUST come first – Hilt injects @Inject fields here.
         super.onCreate(savedInstanceState)
+
+        // 2. Apply the saved dark-mode preference BEFORE setContentView() so the
+        //    correct theme colours are used on the very first layout pass.
+        //    We only do this on a true cold start (savedInstanceState == null) to
+        //    avoid an infinite recreate loop if the mode change triggers a config change.
+        if (savedInstanceState == null) {
+            applyDarkMode()
+        }
+
+        // 3. Inflate and show the layout with the correct theme already applied.
         _binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -31,31 +41,20 @@ class MainActivity : AppCompatActivity() {
         val navController = navHostFragment.navController
 
         binding.bottomNav.setupWithNavController(navController)
-
-        applyDarkModeAsync(savedInstanceState)
     }
 
     /**
-     * Reads the dark-mode preference off the main thread via a coroutine and applies it.
+     * Reads the dark-mode preference synchronously (DataStore on-disk, ~1 ms) and
+     * applies it via [AppCompatDelegate.setDefaultNightMode].
      *
-     * We use [delegate.localNightMode] so only this Activity is affected (no global state side
-     * effects). On the very first cold start, if the stored preference differs from the default
-     * (FOLLOW_SYSTEM), we call [recreate] once – this is instantaneous before the user has
-     * interacted with anything. A [savedInstanceState] check prevents infinite recreate loops.
+     * Called after [super.onCreate] so Hilt has already injected
+     * [userPreferencesRepository], and before [setContentView] so the window is
+     * inflated with the correct theme on the first pass — no visual flash.
      */
-    private fun applyDarkModeAsync(savedInstanceState: Bundle?) {
-        // Only apply on first create, not on config-change/recreate
-        if (savedInstanceState != null) return
-
-        lifecycleScope.launch {
-            val isDark = userPreferencesRepository.isDarkModeEnabled.first()
-            val targetMode = if (isDark) AppCompatDelegate.MODE_NIGHT_YES
-                             else AppCompatDelegate.MODE_NIGHT_NO
-            if (delegate.localNightMode != targetMode) {
-                delegate.localNightMode = targetMode
-                // recreate() applies the new theme instantly before user interaction
-                recreate()
-            }
-        }
+    private fun applyDarkMode() {
+        val isDark = runBlocking { userPreferencesRepository.isDarkModeEnabled.first() }
+        AppCompatDelegate.setDefaultNightMode(
+            if (isDark) AppCompatDelegate.MODE_NIGHT_YES else AppCompatDelegate.MODE_NIGHT_NO,
+        )
     }
 }

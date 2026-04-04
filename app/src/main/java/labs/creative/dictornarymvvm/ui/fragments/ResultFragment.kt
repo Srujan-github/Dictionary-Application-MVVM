@@ -62,7 +62,7 @@ class ResultFragment : Fragment() {
 
         binding.ibPronunciation.setOnClickListener {
             val word = viewModel.wordInfo.value?.word ?: return@setOnClickListener
-            ttsManager.speak(word)  // TtsManager internally guards until ready
+            ttsManager.speak(word) // TtsManager internally guards until ready
         }
 
         binding.ibShare.setOnClickListener {
@@ -152,7 +152,7 @@ class ResultFragment : Fragment() {
             binding.chipGroupSynonyms,
             binding.tvSynonymsLabel,
             bgColor = R.color.color_synonym_bg,
-            textColor = R.color.color_synonym_text
+            textColor = R.color.color_synonym_text,
         )
 
         // Antonyms
@@ -161,7 +161,7 @@ class ResultFragment : Fragment() {
             binding.chipGroupAntonyms,
             binding.tvAntonymsLabel,
             bgColor = R.color.color_antonym_bg,
-            textColor = R.color.color_antonym_text
+            textColor = R.color.color_antonym_text,
         )
     }
 
@@ -178,7 +178,7 @@ class ResultFragment : Fragment() {
         }
         val tv = android.widget.TextView(requireContext()).apply {
             text = "❝  $example"
-            textSize = 14f
+            textSize = EXAMPLE_TEXT_SIZE_SP
             setTextColor(ContextCompat.getColor(requireContext(), R.color.color_text_secondary))
             setPadding(
                 resources.getDimensionPixelSize(R.dimen.space_md),
@@ -224,5 +224,9 @@ class ResultFragment : Fragment() {
         super.onDestroyView()
         _binding = null
         // TtsManager is a Singleton — do NOT shut it down here
+    }
+
+    companion object {
+        private const val EXAMPLE_TEXT_SIZE_SP = 14f
     }
 }

@@ -11,7 +11,8 @@
         <item name="android:windowBackground">@color/color_background</item>
         <item name="android:statusBarColor">@color/color_background</item>
         <item name="android:navigationBarColor">@color/color_surface</item>
-        <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
+        <!-- windowLightStatusBar is intentionally NOT set here so the night qualifier
+             in values-night/themes.xml can override it to false without conflict. -->
     </style>
 
     <style name="Theme.Dictornary_MVVM_app" parent="Base.Theme.Dictornary_MVVM_app" />

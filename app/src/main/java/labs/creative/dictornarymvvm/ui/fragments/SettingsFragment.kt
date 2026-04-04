@@ -25,6 +25,9 @@ class SettingsFragment : Fragment() {
     private val binding get() = _binding!!
     private val viewModel: SettingsViewModel by viewModels()
 
+    private var isUpdatingDarkMode = false
+    private var isUpdatingDailyWord = false
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentSettingsBinding.inflate(inflater, container, false)
         return binding.root
@@ -37,11 +40,17 @@ class SettingsFragment : Fragment() {
 
         lifecycleScope.launch {
             viewModel.isDarkModeEnabled.collectLatest { enabled ->
+                isUpdatingDarkMode = true
                 binding.switchDarkMode.isChecked = enabled
+                isUpdatingDarkMode = false
             }
         }
         binding.switchDarkMode.setOnCheckedChangeListener { _, isChecked ->
+            if (isUpdatingDarkMode) return@setOnCheckedChangeListener
+            // 1. Persist the preference
             viewModel.toggleDarkMode(isChecked)
+            // 2. Apply via the global delegate so all windows update.
+            //    MainActivity reads this same preference via setDefaultNightMode on next cold start.
             AppCompatDelegate.setDefaultNightMode(
                 if (isChecked) AppCompatDelegate.MODE_NIGHT_YES else AppCompatDelegate.MODE_NIGHT_NO,
             )
@@ -49,10 +58,13 @@ class SettingsFragment : Fragment() {
 
         lifecycleScope.launch {
             viewModel.isDailyWordEnabled.collectLatest { enabled ->
+                isUpdatingDailyWord = true
                 binding.switchDailyWord.isChecked = enabled
+                isUpdatingDailyWord = false
             }
         }
         binding.switchDailyWord.setOnCheckedChangeListener { _, isChecked ->
+            if (isUpdatingDailyWord) return@setOnCheckedChangeListener
             viewModel.toggleDailyWord(isChecked)
         }
 

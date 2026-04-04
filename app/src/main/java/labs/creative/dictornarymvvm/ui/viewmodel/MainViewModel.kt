@@ -1,15 +1,21 @@
 package labs.creative.dictornarymvvm.ui.viewmodel
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
+import labs.creative.dictornarymvvm.data.preferences.UserPreferencesRepository
 import labs.creative.dictornarymvvm.domain.model.WordInfo
 import labs.creative.dictornarymvvm.ui.adapter.TrendingWord
 import javax.inject.Inject
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.stateIn
 
 @HiltViewModel
-class MainViewModel @Inject constructor() : ViewModel() {
+class MainViewModel @Inject constructor(
+    private val userPreferencesRepository: UserPreferencesRepository
+) : ViewModel() {
 
     private val _wordOfTheDay = MutableStateFlow<WordInfo?>(null)
     val wordOfTheDay: StateFlow<WordInfo?> get() = _wordOfTheDay
@@ -17,8 +23,12 @@ class MainViewModel @Inject constructor() : ViewModel() {
     private val _trendingWords = MutableStateFlow<List<TrendingWord>>(emptyList())
     val trendingWords: StateFlow<List<TrendingWord>> get() = _trendingWords
 
-    private val _recentWords = MutableStateFlow<List<String>>(emptyList())
-    val recentWords: StateFlow<List<String>> get() = _recentWords
+    val recentWords: StateFlow<List<String>> = userPreferencesRepository.recentWords
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(TIMEOUT_MS), emptyList())
+
+    companion object {
+        private const val TIMEOUT_MS = 5000L
+    }
 
     init {
         loadMvpData()
@@ -68,7 +78,5 @@ class MainViewModel @Inject constructor() : ViewModel() {
                 description = "Able to withstand or recover quickly from difficult conditions.",
             ),
         )
-
-        _recentWords.value = listOf("Paradigm", "Aesthetic", "Catalyst", "Nuance", "Pragmatic")
     }
 }
