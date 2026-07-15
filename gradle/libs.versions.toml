@@ -26,6 +26,9 @@ datastore = "1.1.1"
 hiltNavigation = "1.2.0"
 mockk = "1.13.12"
 coroutinesTest = "1.7.3"
+googleServices = "4.4.2"
+firebaseBom = "33.5.1"
+firebaseCrashlyticsPlugin = "3.0.2"
 workManager = "2.9.1"
 desugarJdkLibs = "2.1.2"
 
@@ -75,6 +78,9 @@ androidx-hilt-navigation-fragment = { group = "androidx.hilt", name = "hilt-navi
 # MockK
 mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
 kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "coroutinesTest" }
+# Firebase
+firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }
+firebase-crashlytics = { module = "com.google.firebase:firebase-crashlytics-ktx" }
 # WorkManager
 androidx-work-runtime-ktx = { module = "androidx.work:work-runtime-ktx", version.ref = "workManager" }
 # Core library desugaring (enables java.time on minSdk 24)
@@ -87,4 +93,6 @@ detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "plugin-detekt" }
 spotless = { id = "com.diffplug.spotless", version.ref = "plugin-spotless" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 navigation-safe-args = { id = "androidx.navigation.safeargs.kotlin", version.ref = "navigationFragmentKtx" }
+google-services = { id = "com.google.gms.google-services", version.ref = "googleServices" }
+firebase-crashlytics-plugin = { id = "com.google.firebase.crashlytics", version.ref = "firebaseCrashlyticsPlugin" }
 
