@@ -66,7 +66,7 @@ class SavedWordsFragment : Fragment() {
     }
 
     private fun observeViewModel() {
-        lifecycleScope.launch {
+        viewLifecycleOwner.lifecycleScope.launch {
             viewModel.savedWords.collectLatest { words ->
                 adapter.submitList(words)
                 binding.tvWordCount.text = when (words.size) {

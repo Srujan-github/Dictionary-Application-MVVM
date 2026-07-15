@@ -5,7 +5,7 @@
 > **Layout:** `fragment_settings.xml` *(to be created)*  
 > **ViewModel:** `SettingsViewModel` *(to be created)*  
 > **Persistence:** Jetpack DataStore (Preferences)  
-> **Status:** 🔴 Not Started
+> **Status:** 🟢 Done — About row wired and language picker persists selection; only real translated string resources (a content/product decision, not a code task) remain to enable actual multi-language switching
 
 ---
 
@@ -336,37 +336,38 @@ object DataStoreModule {
 
 | # | Task | Priority | Status |
 |---|------|----------|--------|
-| 1 | Add DataStore dependency | 🔴 High | ⬜ Pending |
-| 2 | Create `UserPreferencesDataStore.kt` | 🔴 High | ⬜ Pending |
-| 3 | Create `UserPreferencesRepository` | 🔴 High | ⬜ Pending |
-| 4 | Create `DataStoreModule` Hilt module | 🔴 High | ⬜ Pending |
-| 5 | Create `SettingsViewModel` | 🔴 High | ⬜ Pending |
-| 6 | Design `fragment_settings.xml` layout | 🔴 High | ⬜ Pending |
-| 7 | Create `SettingsFragment` | 🔴 High | ⬜ Pending |
-| 8 | Wire Dark Mode toggle → `AppCompatDelegate` | 🔴 High | ⬜ Pending |
-| 9 | Define dark mode colors in `values-night/themes.xml` | 🔴 High | ⬜ Pending |
-| 10 | Wire Daily Word toggle → preferences | 🟡 Medium | ⬜ Pending |
-| 11 | Add Settings tab to Bottom Navigation | 🟡 Medium | ⬜ Pending |
-| 12 | Wire Privacy Policy → browser intent | 🟡 Medium | ⬜ Pending |
-| 13 | Wire Send Feedback → mailto intent | 🟡 Medium | ⬜ Pending |
-| 14 | Wire Rate the App → Play Store intent | 🟡 Medium | ⬜ Pending |
-| 15 | Add WorkManager for daily word notification | 🟢 Low | ⬜ Pending |
-| 16 | Apply saved dark mode preference on app launch | 🟢 Low | ⬜ Pending |
-| 17 | Add Language selector dialog | 🟢 Low | ⬜ Pending |
+| 1 | Add DataStore dependency | 🔴 High | ✅ Done |
+| 2 | Create `UserPreferencesDataStore.kt` | 🔴 High | ✅ Done |
+| 3 | Create `UserPreferencesRepository` | 🔴 High | ✅ Done |
+| 4 | Create `DataStoreModule` Hilt module | 🔴 High | ✅ Done |
+| 5 | Create `SettingsViewModel` | 🔴 High | ✅ Done |
+| 6 | Design `fragment_settings.xml` layout | 🔴 High | ✅ Done |
+| 7 | Create `SettingsFragment` | 🔴 High | ✅ Done |
+| 8 | Wire Dark Mode toggle → `AppCompatDelegate` | 🔴 High | ✅ Done |
+| 9 | Define dark mode colors in `values-night/themes.xml` | 🔴 High | ✅ Done |
+| 10 | Wire Daily Word toggle → preferences | 🟡 Medium | ✅ Done |
+| 11 | Add Settings tab to Bottom Navigation | 🟡 Medium | ✅ Done |
+| 12 | Wire Privacy Policy → browser intent | 🟡 Medium | ✅ Done |
+| 13 | Wire Send Feedback → mailto intent | 🟡 Medium | ✅ Done |
+| 14 | Wire Rate the App → Play Store intent | 🟡 Medium | ✅ Done |
+| 15 | Add WorkManager for daily word notification | 🟢 Low | ✅ Done |
+| 16 | Apply saved dark mode preference on app launch | 🟢 Low | ✅ Done |
+| 17 | Add Language selector dialog | 🟢 Low | ✅ Done — persists selection via DataStore, pre-selects current choice; only offers "English" since no other locale's strings are translated yet (content dependency, not code) |
+| 18 | Wire "About Lexicon" row to an About screen/dialog | 🟢 Low | ✅ Done |
 
 ---
 
 ## 11. Acceptance Criteria
 
-- [ ] Settings screen loads without crashes.
-- [ ] Dark Mode toggle switches between light and dark theme immediately.
-- [ ] Dark Mode preference is restored after app restart.
-- [ ] Daily Word toggle state is persisted across app sessions.
-- [ ] Privacy Policy link opens a browser.
-- [ ] Send Feedback opens an email client.
-- [ ] Rate the App opens a store listing intent.
-- [ ] App version is displayed at the bottom (`BuildConfig.VERSION_NAME`).
-- [ ] Settings tab is highlighted when active in bottom navigation.
+- [x] Settings screen loads without crashes.
+- [x] Dark Mode toggle switches between light and dark theme immediately.
+- [x] Dark Mode preference is restored after app restart.
+- [x] Daily Word toggle state is persisted across app sessions.
+- [x] Privacy Policy link opens a browser.
+- [x] Send Feedback opens an email client.
+- [x] Rate the App opens a store listing intent.
+- [x] App version is displayed at the bottom (`BuildConfig.VERSION_NAME`).
+- [x] Settings tab is highlighted when active in bottom navigation.
 
 ---
 

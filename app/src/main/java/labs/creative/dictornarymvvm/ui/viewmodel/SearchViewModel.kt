@@ -51,13 +51,14 @@ class SearchViewModel @Inject constructor(
             _searchQuery
                 .debounce(DEBOUNCE_DELAY_MS)
                 .flatMapLatest { query ->
-                    if (query.trim().length < MIN_QUERY_LENGTH) {
+                    val trimmedQuery = query.trim()
+                    if (trimmedQuery.length < MIN_QUERY_LENGTH) {
                         flow { emit(SearchUiState.Idle) }
                     } else {
                         flow {
                             emit(SearchUiState.Loading)
                             try {
-                                val results = getWordSuggestionsUseCase(query)
+                                val results = getWordSuggestionsUseCase(trimmedQuery)
                                 if (results.isEmpty()) {
                                     emit(SearchUiState.Error("No search results found."))
                                 } else {
@@ -69,6 +70,11 @@ class SearchViewModel @Inject constructor(
                             } catch (e: retrofit2.HttpException) {
                                 timber.log.Timber.e(e, "Server error: ${e.code()}")
                                 emit(SearchUiState.Error("Server error: ${e.message()}"))
+                            } catch (e: kotlinx.coroutines.CancellationException) {
+                                // Thrown when flatMapLatest cancels this in-flight request in
+                                // favor of a newer query, or when viewModelScope is cleared.
+                                // Must propagate so structured concurrency can unwind properly.
+                                throw e
                             } catch (@Suppress("TooGenericExceptionCaught") e: Exception) {
                                 timber.log.Timber.e(e, "Unexpected error during search")
                                 emit(SearchUiState.Error(e.localizedMessage ?: "An unexpected error occurred"))

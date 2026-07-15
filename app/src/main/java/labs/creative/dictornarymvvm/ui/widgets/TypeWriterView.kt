@@ -7,6 +7,7 @@ import android.util.AttributeSet
 import android.view.ViewTreeObserver
 import androidx.appcompat.widget.AppCompatTextView
 import kotlin.math.max
+import kotlin.math.min
 
 /**
  * A [AppCompatTextView] that types out text character-by-character,
@@ -44,8 +45,15 @@ class TypeWriterView : AppCompatTextView {
 
     private val characterAdder = object : Runnable {
         override fun run() {
-            text = mText?.subSequence(0, mIndex++)
-            if (mIndex <= (mText?.length ?: 0)) {
+            // mText can be swapped mid-animation by the global layout listener once the
+            // real measured width is known, so mIndex must be clamped against its
+            // current length rather than the length assumed when typing started.
+            val currentText = mText
+            val length = currentText?.length ?: 0
+            val end = min(mIndex, length)
+            text = currentText?.subSequence(0, end)
+            mIndex = end + 1
+            if (mIndex <= length) {
                 mHandler.postDelayed(this, mDelay)
                 isAnimationRunning = true
             } else {

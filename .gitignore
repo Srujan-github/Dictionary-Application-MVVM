@@ -13,3 +13,10 @@
 .externalNativeBuild
 .cxx
 local.properties
+
+# graphify knowledge graph output
+/graphify-out/
+
+# build artifacts / local tool caches — not source
+/app/release/
+/vendor/

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Night-mode overrides for semantic color tokens -->
+
+    <!-- Background -->
+    <color name="color_background">#0F0B1E</color>
+
+    <!-- Primary -->
+    <color name="color_primary">#9B7FF5</color>
+    <color name="color_primary_light">#B09BFA</color>
+    <color name="color_primary_container">#2A1E5C</color>
+    <color name="color_on_primary">#1A0A4A</color>
+
+    <!-- Surface -->
+    <color name="color_surface">#1C1635</color>
+    <color name="color_surface_variant">#231B45</color>
+
+    <!-- Text -->
+    <color name="color_text_primary">#E8E0FF</color>
+    <color name="color_text_secondary">#A89ED4</color>
+    <color name="color_text_hint">#6B5FA0</color>
+
+    <!-- Semantic -->
+    <color name="color_synonym_bg">#2A1E5C</color>
+    <color name="color_synonym_text">#9B7FF5</color>
+    <color name="color_antonym_bg">#3B1A2A</color>
+    <color name="color_antonym_text">#F48FB1</color>
+    <color name="color_error">#F28B82</color>
+    <color name="color_divider">#2E2550</color>
+</resources>

@@ -25,11 +25,18 @@ class SettingsViewModel @Inject constructor(
     val isDailyWordEnabled: StateFlow<Boolean> = userPreferencesRepository.isDailyWordEnabled
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(SUBSCRIPTION_TIMEOUT_MS), true)
 
+    val appLanguage: StateFlow<String> = userPreferencesRepository.appLanguage
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(SUBSCRIPTION_TIMEOUT_MS), "English")
+
     fun toggleDarkMode(enabled: Boolean) {
         viewModelScope.launch { userPreferencesRepository.setDarkMode(enabled) }
     }
 
     fun toggleDailyWord(enabled: Boolean) {
         viewModelScope.launch { userPreferencesRepository.setDailyWord(enabled) }
+    }
+
+    fun setAppLanguage(language: String) {
+        viewModelScope.launch { userPreferencesRepository.setAppLanguage(language) }
     }
 }

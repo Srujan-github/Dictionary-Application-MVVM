@@ -57,9 +57,18 @@
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:background="?attr/selectableItemBackgroundBorderless"
-                android:contentDescription="Clear"
-                android:src="@android:drawable/ic_menu_close_clear_cancel"
+                android:contentDescription="@string/clear"
+                android:src="@drawable/ic_clear"
                 android:visibility="gone"
+                app:tint="@color/color_text_secondary" />
+
+            <ImageButton
+                android:id="@+id/micButton"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@string/voice_search"
+                android:src="@drawable/ic_mic"
                 app:tint="@color/color_text_secondary" />
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
@@ -75,16 +84,18 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-    <ProgressBar
+    <com.google.android.material.progressindicator.CircularProgressIndicator
         android:id="@+id/progressBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:indicatorColor="@color/color_primary"
+        app:indicatorSize="40dp"
+        app:trackThickness="4dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:visibility="gone"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        />
+        app:layout_constraintTop_toTopOf="parent" />
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

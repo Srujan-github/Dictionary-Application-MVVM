@@ -12,7 +12,6 @@
     <color name="color_primary_light">#7B5FC8</color>
     <color name="color_primary_container">#EDE7FF</color>
     <color name="color_on_primary">#FFFFFF</color>
-    <color name="color_primary_container_dark">#DDD5F8</color>
 
     <!-- Surface -->
     <color name="color_surface">#FAF8FF</color>
@@ -30,10 +29,4 @@
     <color name="color_antonym_text">#C2185B</color>
     <color name="color_error">#E53935</color>
     <color name="color_divider">#E8E4F0</color>
-
-    <!-- Dark mode overrides (applied in values-night) -->
-    <color name="color_background_dark">#0F0B1E</color>
-    <color name="color_surface_dark">#1C1635</color>
-    <color name="color_primary_dark">#9B7FF5</color>
-    <color name="color_on_surface_dark">#E8E0FF</color>
 </resources>

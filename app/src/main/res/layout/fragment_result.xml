@@ -203,13 +203,16 @@
             app:chipSpacingHorizontal="@dimen/space_sm" />
 
         <!-- ── Loading / Error ── -->
-        <ProgressBar
+        <com.google.android.material.progressindicator.CircularProgressIndicator
             android:id="@+id/progressBar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="@dimen/space_xl"
-            android:visibility="gone" />
+            android:visibility="gone"
+            app:indicatorColor="@color/color_primary"
+            app:indicatorSize="40dp"
+            app:trackThickness="4dp" />
 
         <TextView
             android:id="@+id/tvError"

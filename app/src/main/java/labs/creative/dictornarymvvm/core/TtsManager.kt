@@ -3,6 +3,7 @@ package labs.creative.dictornarymvvm.core
 import android.content.Context
 import android.speech.tts.TextToSpeech
 import dagger.hilt.android.qualifiers.ApplicationContext
+import timber.log.Timber
 import java.util.Locale
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -47,7 +48,10 @@ class TtsManager @Inject constructor(
         try {
             tts?.speak(word, TextToSpeech.QUEUE_FLUSH, null, null)
         } catch (e: android.os.DeadObjectException) {
-            timber.log.Timber.e(e, "TTS DeadObjectException recovered")
+            // Known-harmless: the TTS engine process was killed by the OS mid-call. This is
+            // recovered automatically below (reinitialize + auto-retry), so it's not an error —
+            // log at warning level only so it remains visible for diagnostics without alarming.
+            Timber.w(e, "TTS engine process died (DeadObjectException); reinitializing")
             // TTS engine process was killed; drop the dead binder and reinitialize
             tts?.shutdown()
             tts = null
@@ -56,8 +60,15 @@ class TtsManager @Inject constructor(
                 if (status == TextToSpeech.SUCCESS) {
                     tts?.language = Locale.US
                     isReady = true
-                    // Retry automatically with the same word
-                    tts?.speak(word, TextToSpeech.QUEUE_FLUSH, null, null)
+                    // Retry automatically with the same word. Guarded the same way as the
+                    // initial attempt above so a second, immediate engine death (rare, but
+                    // seen on some OEM TTS implementations) can't throw out of this
+                    // OnInitListener callback and crash the app on the main thread.
+                    try {
+                        tts?.speak(word, TextToSpeech.QUEUE_FLUSH, null, null)
+                    } catch (e: android.os.DeadObjectException) {
+                        Timber.w(e, "TTS engine died again during recovery retry; giving up for this word")
+                    }
                 }
             }
         }

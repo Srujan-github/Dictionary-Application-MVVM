@@ -49,7 +49,7 @@
             android:id="@+id/action_resultFragment_to_resultFragment"
             app:destination="@id/resultFragment"
             app:popUpTo="@id/resultFragment"
-            app:popUpToInclusive="false" />
+            app:popUpToInclusive="true" />
     </fragment>
 
     <fragment
