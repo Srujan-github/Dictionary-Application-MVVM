@@ -4,7 +4,7 @@
 > **Fragment:** `SearchFragment`  
 > **Layout:** `fragment_search.xml`  
 > **ViewModel:** `SearchViewModel`  
-> **Status:** 🟢 Mostly Done — core search works; see enhancements below
+> **Status:** 🟢 Done — debounce, DiffUtil, navigation, and voice search all implemented
 
 ---
 
@@ -250,28 +250,28 @@ Returns  : List<WordSuggestionDto>
 
 | # | Task | Priority | Status |
 |---|------|----------|--------|
-| 1 | Add search debounce (300 ms) via `MutableStateFlow` | 🔴 High | ⬜ Pending |
-| 2 | Make suggestion items tappable → navigate to ResultFragment | 🔴 High | ⬜ Pending |
-| 3 | Migrate `WordSearchAdapter` to `ListAdapter` + `DiffUtil` | 🔴 High | ⬜ Pending |
-| 4 | Add Safe Args for word navigation | 🔴 High | ⬜ Pending |
-| 5 | Add minimum query length guard (>= 2 chars) | 🟡 Medium | ⬜ Pending |
-| 6 | Style `fragment_search.xml` to match design | 🟡 Medium | ⬜ Pending |
-| 7 | Add `word_card_view.xml` arrow indicator for tappable items | 🟡 Medium | ⬜ Pending |
-| 8 | Save searched word to history on tap | 🟢 Low | ⬜ Pending |
-| 9 | Add voice search via SpeechRecognizer | 🟢 Low | ⬜ Pending |
+| 1 | Add search debounce (300 ms) via `MutableStateFlow` | 🔴 High | ✅ Done |
+| 2 | Make suggestion items tappable → navigate to ResultFragment | 🔴 High | ✅ Done |
+| 3 | Migrate `WordSearchAdapter` to `ListAdapter` + `DiffUtil` | 🔴 High | ✅ Done |
+| 4 | Add Safe Args for word navigation | 🔴 High | ✅ Done |
+| 5 | Add minimum query length guard (>= 2 chars) | 🟡 Medium | ✅ Done |
+| 6 | Style `fragment_search.xml` to match design | 🟡 Medium | ✅ Done |
+| 7 | Add `item_word_search.xml` arrow indicator for tappable items | 🟡 Medium | ✅ Done (item layout renamed from `word_card_view.xml`) |
+| 8 | Save searched word to history on tap | 🟢 Low | ✅ Done (recorded once the word's detail loads, via `UserPreferencesRepository.addRecentWord`) |
+| 9 | Add voice search via SpeechRecognizer | 🟢 Low | ✅ Done |
 
 ---
 
 ## 10. Acceptance Criteria
 
-- [ ] Typing in the search bar fetches suggestions from Datamuse API.
-- [ ] Suggestions appear in a list with word name.
-- [ ] API calls are debounced by at least 300 ms.
-- [ ] Queries shorter than 2 characters do not trigger API calls.
-- [ ] Loading indicator is shown while fetching.
-- [ ] Errors are displayed in the empty-state text view.
-- [ ] Tapping a suggestion navigates to the Word Detail screen.
-- [ ] Empty state text shows "Type to search…" on initial load.
+- [x] Typing in the search bar fetches suggestions from Datamuse API.
+- [x] Suggestions appear in a list with word name.
+- [x] API calls are debounced by at least 300 ms.
+- [x] Queries shorter than 2 characters do not trigger API calls.
+- [x] Loading indicator is shown while fetching.
+- [x] Errors are displayed in the empty-state text view.
+- [x] Tapping a suggestion navigates to the Word Detail screen.
+- [ ] Empty state text shows "Type to search…" on initial load (currently the hint stays hidden on initial/idle state instead of showing a prompt).
 
 ---
 

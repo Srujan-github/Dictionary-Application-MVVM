@@ -3,7 +3,7 @@
 > **Screen Name:** Discover Words  
 > **Fragment:** `MainFragment`  
 > **Layout:** `fragment_main.xml`  
-> **Status:** 🟡 In Progress — basic scaffold exists; sections below are pending
+> **Status:** 🟢 Done — all sections implemented and wired to live data
 
 ---
 
@@ -182,30 +182,30 @@ class MainViewModel @Inject constructor(
 
 | # | Task | Priority | Status |
 |---|------|----------|--------|
-| 1 | Design `fragment_main.xml` layout matching wireframe | 🔴 High | ⬜ Pending |
-| 2 | Create `MainViewModel` with hardcoded MVP data | 🔴 High | ⬜ Pending |
-| 3 | Wire `MainFragment` to `MainViewModel` | 🔴 High | ⬜ Pending |
-| 4 | Implement Recent Chips (horizontal scroll) | 🔴 High | ⬜ Pending |
-| 5 | Implement Word of the Day card | 🔴 High | ⬜ Pending |
-| 6 | Implement Trending RecyclerView with `WordsTilesAdapter` | 🔴 High | ⬜ Pending |
-| 7 | Wire search bar tap → navigate to SearchFragment | 🔴 High | ⬜ Pending |
-| 8 | Wire all item taps → navigate to ResultFragment with word arg | 🟡 Medium | ⬜ Pending |
-| 9 | Add `TypeWriterView` tagline below header | 🟡 Medium | ⬜ Pending |
-| 10 | Persist recent words to SharedPreferences / Room | 🟢 Low | ⬜ Pending |
-| 11 | Connect Word of the Day to real API | 🟢 Low | ⬜ Pending |
+| 1 | Design `fragment_main.xml` layout matching wireframe | 🔴 High | ✅ Done |
+| 2 | Create `MainViewModel` with hardcoded MVP data | 🔴 High | ✅ Done |
+| 3 | Wire `MainFragment` to `MainViewModel` | 🔴 High | ✅ Done |
+| 4 | Implement Recent Chips (horizontal scroll) | 🔴 High | ✅ Done |
+| 5 | Implement Word of the Day card | 🔴 High | ✅ Done |
+| 6 | Implement Trending RecyclerView with `TrendingAdapter` | 🔴 High | ✅ Done |
+| 7 | Wire search bar tap → navigate to SearchFragment | 🔴 High | ✅ Done |
+| 8 | Wire all item taps → navigate to ResultFragment with word arg | 🟡 Medium | ✅ Done |
+| 9 | Add `TypeWriterView` tagline below header | 🟡 Medium | ✅ Done |
+| 10 | Persist recent words to SharedPreferences / Room | 🟢 Low | ✅ Done (via DataStore, `UserPreferencesRepository`) |
+| 11 | Connect Word of the Day to real API | 🟢 Low | ✅ Done (`GetWordInfoUseCase`, day-of-year word pool) |
 
 ---
 
 ## 7. Acceptance Criteria
 
-- [ ] Home screen loads without crashes on API 24+.
-- [ ] Search bar tap navigates to SearchFragment.
-- [ ] Word of the Day card displays a word, phonetic, and short definition.
-- [ ] Trending list shows at least 3 items with rank badges.
-- [ ] Tapping any word navigates to ResultFragment.
-- [ ] Recent chips section is visible (at least with placeholder data).
-- [ ] Bottom navigation bar is functional.
-- [ ] Screen matches the design reference (colors, spacing, typography).
+- [x] Home screen loads without crashes on API 24+.
+- [x] Search bar tap navigates to SearchFragment.
+- [x] Word of the Day card displays a word, phonetic, and short definition.
+- [x] Trending list shows at least 3 items with rank badges.
+- [x] Tapping any word navigates to ResultFragment.
+- [x] Recent chips section is visible (at least with placeholder data).
+- [x] Bottom navigation bar is functional.
+- [x] Screen matches the design reference (colors, spacing, typography).
 
 ---
 

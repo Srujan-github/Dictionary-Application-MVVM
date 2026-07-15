@@ -6,8 +6,6 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.runBlocking
 import labs.creative.dictornarymvvm.data.preferences.UserPreferencesRepository
 import labs.creative.dictornarymvvmapp.databinding.ActivityMainBinding
 import javax.inject.Inject
@@ -44,15 +42,17 @@ class MainActivity : AppCompatActivity() {
     }
 
     /**
-     * Reads the dark-mode preference synchronously (DataStore on-disk, ~1 ms) and
-     * applies it via [AppCompatDelegate.setDefaultNightMode].
+     * Reads the dark-mode preference synchronously from a SharedPreferences mirror
+     * (kept in sync by [UserPreferencesRepository.setDarkMode]) and applies it via
+     * [AppCompatDelegate.setDefaultNightMode]. This avoids blocking the main thread
+     * on DataStore disk I/O.
      *
      * Called after [super.onCreate] so Hilt has already injected
      * [userPreferencesRepository], and before [setContentView] so the window is
      * inflated with the correct theme on the first pass — no visual flash.
      */
     private fun applyDarkMode() {
-        val isDark = runBlocking { userPreferencesRepository.isDarkModeEnabled.first() }
+        val isDark = userPreferencesRepository.isDarkModeEnabledSync()
         AppCompatDelegate.setDefaultNightMode(
             if (isDark) AppCompatDelegate.MODE_NIGHT_YES else AppCompatDelegate.MODE_NIGHT_NO,
         )

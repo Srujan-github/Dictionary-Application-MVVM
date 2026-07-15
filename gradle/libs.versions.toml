@@ -25,6 +25,9 @@ room = "2.6.1"
 datastore = "1.1.1"
 hiltNavigation = "1.2.0"
 mockk = "1.13.12"
+coroutinesTest = "1.7.3"
+workManager = "2.9.1"
+desugarJdkLibs = "2.1.2"
 
 plugin-detekt = "1.23.7"
 plugin-spotless = "6.19.0"
@@ -71,6 +74,11 @@ androidx-hilt-navigation = { group = "androidx.hilt", name = "hilt-navigation", 
 androidx-hilt-navigation-fragment = { group = "androidx.hilt", name = "hilt-navigation-fragment", version.ref = "hiltNavigation" }
 # MockK
 mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
+kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "coroutinesTest" }
+# WorkManager
+androidx-work-runtime-ktx = { module = "androidx.work:work-runtime-ktx", version.ref = "workManager" }
+# Core library desugaring (enables java.time on minSdk 24)
+desugar-jdk-libs = { module = "com.android.tools:desugar_jdk_libs", version.ref = "desugarJdkLibs" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

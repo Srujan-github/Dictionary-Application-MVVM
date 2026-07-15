@@ -4,7 +4,7 @@
 > **Fragment:** `ResultFragment`  
 > **Layout:** `fragment_result.xml`  
 > **ViewModel:** `ResultViewModel` *(to be created)*  
-> **Status:** 🔴 Incomplete — only scaffold exists; full implementation pending
+> **Status:** 🟢 Done — full detail screen implemented, including audio pronunciation and save/share
 
 ---
 
@@ -333,36 +333,36 @@ override fun onViewCreated(...) {
 
 | # | Task | Priority | Status |
 |---|------|----------|--------|
-| 1 | Expand `WordInfo` domain model with full fields | 🔴 High | ⬜ Pending |
-| 2 | Update `ToDomain.kt` mapper for full data | 🔴 High | ⬜ Pending |
-| 3 | Create `ResultViewModel` | 🔴 High | ⬜ Pending |
-| 4 | Add Safe Args — `word: String` argument to nav_graph | 🔴 High | ⬜ Pending |
-| 5 | Design `fragment_result.xml` layout | 🔴 High | ⬜ Pending |
-| 6 | Wire `ResultFragment` to `ResultViewModel` | 🔴 High | ⬜ Pending |
-| 7 | Bind definition, examples to cards | 🔴 High | ⬜ Pending |
-| 8 | Implement synonym chips (lavender) with navigation | 🔴 High | ⬜ Pending |
-| 9 | Implement antonym chips (pink) with navigation | 🔴 High | ⬜ Pending |
-| 10 | Add TTS pronunciation on mic button tap | 🟡 Medium | ⬜ Pending |
-| 11 | Implement share action | 🟡 Medium | ⬜ Pending |
-| 12 | Implement bookmark (save to Room DB) | 🟡 Medium | ⬜ Pending |
-| 13 | Handle word not found (404) gracefully | 🟡 Medium | ⬜ Pending |
-| 14 | Audio pronunciation via audio URL | 🟢 Low | ⬜ Pending |
+| 1 | Expand `WordInfo` domain model with full fields | 🔴 High | ✅ Done |
+| 2 | Update `ToDomain.kt` mapper for full data | 🔴 High | ✅ Done |
+| 3 | Create `ResultViewModel` | 🔴 High | ✅ Done |
+| 4 | Add Safe Args — `word: String` argument to nav_graph | 🔴 High | ✅ Done |
+| 5 | Design `fragment_result.xml` layout | 🔴 High | ✅ Done |
+| 6 | Wire `ResultFragment` to `ResultViewModel` | 🔴 High | ✅ Done |
+| 7 | Bind definition, examples to cards | 🔴 High | ✅ Done |
+| 8 | Implement synonym chips (lavender) with navigation | 🔴 High | ✅ Done |
+| 9 | Implement antonym chips (pink) with navigation | 🔴 High | ✅ Done |
+| 10 | Add TTS pronunciation on mic button tap | 🟡 Medium | ✅ Done |
+| 11 | Implement share action | 🟡 Medium | ✅ Done |
+| 12 | Implement bookmark (save to Room DB) | 🟡 Medium | ✅ Done |
+| 13 | Handle word not found (404) gracefully | 🟡 Medium | ✅ Done |
+| 14 | Audio pronunciation via audio URL | 🟢 Low | ✅ Done (falls back to TTS if playback fails) |
 
 ---
 
 ## 11. Acceptance Criteria
 
-- [ ] Screen receives word as navigation argument and loads it.
-- [ ] Word title, phonetic, and part-of-speech are displayed.
-- [ ] At least one definition is shown in a card.
-- [ ] Example sentences are shown (if available).
-- [ ] Synonym chips are shown in lavender.
-- [ ] Antonym chips are shown in pink.
-- [ ] Tapping a synonym/antonym chip navigates to that word's detail.
-- [ ] Pronunciation button fires TTS.
-- [ ] Loading state shown while API fetches data.
-- [ ] Error state shown if word not found.
-- [ ] Back button returns to previous screen.
+- [x] Screen receives word as navigation argument and loads it.
+- [x] Word title, phonetic, and part-of-speech are displayed.
+- [x] At least one definition is shown in a card.
+- [x] Example sentences are shown (if available).
+- [x] Synonym chips are shown in lavender.
+- [x] Antonym chips are shown in pink.
+- [x] Tapping a synonym/antonym chip navigates to that word's detail.
+- [x] Pronunciation button fires TTS.
+- [x] Loading state shown while API fetches data.
+- [x] Error state shown if word not found.
+- [x] Back button returns to previous screen.
 
 ---
 

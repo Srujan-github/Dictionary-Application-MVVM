@@ -68,7 +68,7 @@ class MainFragment : Fragment() {
     }
 
     private fun observeViewModel() {
-        lifecycleScope.launch {
+        viewLifecycleOwner.lifecycleScope.launch {
             viewModel.wordOfTheDay.collectLatest { wordInfo ->
                 wordInfo ?: return@collectLatest
                 binding.tvWotdWord.text = wordInfo.word
@@ -77,13 +77,13 @@ class MainFragment : Fragment() {
             }
         }
 
-        lifecycleScope.launch {
+        viewLifecycleOwner.lifecycleScope.launch {
             viewModel.trendingWords.collectLatest { words ->
                 trendingAdapter.submitList(words)
             }
         }
 
-        lifecycleScope.launch {
+        viewLifecycleOwner.lifecycleScope.launch {
             viewModel.recentWords.collectLatest { words ->
                 populateRecentChips(words)
             }
@@ -113,6 +113,7 @@ class MainFragment : Fragment() {
     private fun setupClickListeners() {
         // Search bar tap → expand transition to SearchFragment
         binding.cardSearchBar.setOnClickListener {
+            if (findNavController().currentDestination?.id != R.id.mainFragment) return@setOnClickListener
             val extras = androidx.navigation.fragment.FragmentNavigatorExtras(
                 binding.cardSearchBar to "shared_search_bar",
             )
@@ -138,6 +139,7 @@ class MainFragment : Fragment() {
     }
 
     private fun navigateToResult(word: String) {
+        if (findNavController().currentDestination?.id != R.id.mainFragment) return
         val action = MainFragmentDirections.actionMainFragmentToResultFragment(word)
         findNavController().navigate(action)
     }

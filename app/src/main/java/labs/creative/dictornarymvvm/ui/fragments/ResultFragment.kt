@@ -1,6 +1,7 @@
 package labs.creative.dictornarymvvm.ui.fragments
 
 import android.content.Intent
+import android.media.MediaPlayer
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -21,6 +22,7 @@ import labs.creative.dictornarymvvm.domain.model.WordInfo
 import labs.creative.dictornarymvvm.ui.viewmodel.ResultViewModel
 import labs.creative.dictornarymvvmapp.R
 import labs.creative.dictornarymvvmapp.databinding.FragmentResultBinding
+import timber.log.Timber
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -32,6 +34,7 @@ class ResultFragment : Fragment() {
     private val binding get() = _binding!!
     private val viewModel: ResultViewModel by viewModels()
     private val args: ResultFragmentArgs by navArgs()
+    private var audioPlayer: MediaPlayer? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -61,8 +64,13 @@ class ResultFragment : Fragment() {
         }
 
         binding.ibPronunciation.setOnClickListener {
-            val word = viewModel.wordInfo.value?.word ?: return@setOnClickListener
-            ttsManager.speak(word) // TtsManager internally guards until ready
+            val info = viewModel.wordInfo.value ?: return@setOnClickListener
+            val audioUrl = info.audioUrl
+            if (!audioUrl.isNullOrBlank()) {
+                playAudioUrl(audioUrl, fallbackWord = info.word)
+            } else {
+                ttsManager.speak(info.word) // TtsManager internally guards until ready
+            }
         }
 
         binding.ibShare.setOnClickListener {
@@ -89,21 +97,58 @@ class ResultFragment : Fragment() {
         }
     }
 
+    /**
+     * Plays [audioUrl] as the primary pronunciation source. Falls back to TTS for
+     * [fallbackWord] if playback fails to start (e.g. malformed/unreachable URL).
+     */
+    private fun playAudioUrl(audioUrl: String, fallbackWord: String) {
+        releaseAudioPlayer()
+        val player = MediaPlayer()
+        audioPlayer = player
+        player.apply {
+            // Rapid taps can create a new player before this one finishes preparing; the old
+            // instance's listeners may still fire after it's been superseded, so only act on
+            // callbacks that belong to the still-current player.
+            setOnPreparedListener { mp -> if (audioPlayer === mp) mp.start() }
+            setOnErrorListener { mp, _, _ ->
+                if (audioPlayer === mp) {
+                    Timber.e("audio playback failed for %s, falling back to TTS", audioUrl)
+                    releaseAudioPlayer()
+                    ttsManager.speak(fallbackWord)
+                }
+                true
+            }
+            try {
+                setDataSource(audioUrl)
+                prepareAsync()
+            } catch (e: java.io.IOException) {
+                Timber.e(e, "audio playback failed for %s, falling back to TTS", audioUrl)
+                if (audioPlayer === this) releaseAudioPlayer()
+                ttsManager.speak(fallbackWord)
+            }
+        }
+    }
+
+    private fun releaseAudioPlayer() {
+        audioPlayer?.release()
+        audioPlayer = null
+    }
+
     private fun observeViewModel() {
-        lifecycleScope.launch {
+        viewLifecycleOwner.lifecycleScope.launch {
             viewModel.wordInfo.collectLatest { wordInfo ->
                 wordInfo ?: return@collectLatest
                 bindWordInfo(wordInfo)
             }
         }
 
-        lifecycleScope.launch {
+        viewLifecycleOwner.lifecycleScope.launch {
             viewModel.isLoading.collectLatest { isLoading ->
                 binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
             }
         }
 
-        lifecycleScope.launch {
+        viewLifecycleOwner.lifecycleScope.launch {
             viewModel.error.collectLatest { error ->
                 if (error != null) {
                     binding.tvError.text = error
@@ -115,7 +160,7 @@ class ResultFragment : Fragment() {
         }
 
         // Bug 2 fix: observe isSaved to update bookmark icon
-        lifecycleScope.launch {
+        viewLifecycleOwner.lifecycleScope.launch {
             viewModel.isSaved.collectLatest { saved ->
                 val iconRes = if (saved) R.drawable.ic_bookmark_filled else R.drawable.ic_bookmark_outline
                 binding.ibBookmark.setImageResource(iconRes)
@@ -222,6 +267,7 @@ class ResultFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        releaseAudioPlayer()
         _binding = null
         // TtsManager is a Singleton — do NOT shut it down here
     }

@@ -18,6 +18,10 @@
     <string name="search_any_word">Search any word</string>
     <string name="no_search_found">No results found</string>
     <string name="search_empty_hint">Type to search…</string>
+    <string name="clear">Clear</string>
+    <string name="voice_search">Voice search</string>
+    <string name="voice_search_permission_rationale">Microphone permission is required for voice search</string>
+    <string name="voice_search_not_available">Voice search is not available on this device</string>
 
     <!-- Word Detail Screen -->
     <string name="definition_label">DEFINITION</string>
@@ -54,6 +58,10 @@
     <string name="language_value">English</string>
     <string name="daily_word">Daily Word</string>
     <string name="daily_word_subtitle">Get a new word every day</string>
+    <string name="daily_word_notification_channel_name">Daily Word</string>
+    <string name="daily_word_notification_channel_desc">Notifies you of a new word each day</string>
+    <string name="daily_word_notification_title">Word of the Day</string>
+    <string name="select_language">Select Language</string>
     <string name="about_lexicon">About Modern-Day Dictionary</string>
     <string name="privacy_policy">Privacy Policy</string>
     <string name="send_feedback">Send Feedback</string>

@@ -6,17 +6,23 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.work.ExistingPeriodicWorkPolicy
+import androidx.work.PeriodicWorkRequestBuilder
+import androidx.work.WorkManager
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import labs.creative.dictornarymvvm.core.DailyWordWorker
 import labs.creative.dictornarymvvm.ui.viewmodel.SettingsViewModel
 import labs.creative.dictornarymvvmapp.BuildConfig
 import labs.creative.dictornarymvvmapp.R
 import labs.creative.dictornarymvvmapp.databinding.FragmentSettingsBinding
+import java.util.concurrent.TimeUnit
 
 @AndroidEntryPoint
 class SettingsFragment : Fragment() {
@@ -38,7 +44,7 @@ class SettingsFragment : Fragment() {
 
         binding.tvVersion.text = getString(R.string.app_version, BuildConfig.VERSION_NAME)
 
-        lifecycleScope.launch {
+        viewLifecycleOwner.lifecycleScope.launch {
             viewModel.isDarkModeEnabled.collectLatest { enabled ->
                 isUpdatingDarkMode = true
                 binding.switchDarkMode.isChecked = enabled
@@ -56,11 +62,14 @@ class SettingsFragment : Fragment() {
             )
         }
 
-        lifecycleScope.launch {
+        viewLifecycleOwner.lifecycleScope.launch {
             viewModel.isDailyWordEnabled.collectLatest { enabled ->
                 isUpdatingDailyWord = true
                 binding.switchDailyWord.isChecked = enabled
                 isUpdatingDailyWord = false
+                // Keep the scheduled work in sync with the persisted preference,
+                // including on initial load (e.g. after a process restart).
+                updateDailyWordSchedule(enabled)
             }
         }
         binding.switchDailyWord.setOnCheckedChangeListener { _, isChecked ->
@@ -68,6 +77,18 @@ class SettingsFragment : Fragment() {
             viewModel.toggleDailyWord(isChecked)
         }
 
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.appLanguage.collectLatest { language ->
+                binding.tvLanguageValue.text = language
+            }
+        }
+        binding.rowLanguage.setOnClickListener {
+            showLanguageDialog()
+        }
+
+        binding.rowAbout.setOnClickListener {
+            showAboutDialog()
+        }
         binding.rowPrivacy.setOnClickListener {
             startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://example.com/privacy")))
         }
@@ -83,5 +104,44 @@ class SettingsFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private fun updateDailyWordSchedule(enabled: Boolean) {
+        val workManager = WorkManager.getInstance(requireContext())
+        if (enabled) {
+            val request = PeriodicWorkRequestBuilder<DailyWordWorker>(1, TimeUnit.DAYS).build()
+            workManager.enqueueUniquePeriodicWork(
+                DAILY_WORD_WORK_NAME,
+                ExistingPeriodicWorkPolicy.KEEP,
+                request,
+            )
+        } else {
+            workManager.cancelUniqueWork(DAILY_WORD_WORK_NAME)
+        }
+    }
+
+    private fun showLanguageDialog() {
+        val languages = arrayOf(getString(R.string.language_value))
+        val checkedItem = languages.indexOf(viewModel.appLanguage.value).coerceAtLeast(0)
+        AlertDialog.Builder(requireContext())
+            .setTitle(R.string.select_language)
+            .setSingleChoiceItems(languages, checkedItem) { dialog, which ->
+                viewModel.setAppLanguage(languages[which])
+                dialog.dismiss()
+            }
+            .show()
+    }
+
+    private fun showAboutDialog() {
+        val message = getString(R.string.app_version, BuildConfig.VERSION_NAME) + "\n\n" + getString(R.string.tagline_1)
+        AlertDialog.Builder(requireContext())
+            .setTitle(R.string.app_name)
+            .setMessage(message)
+            .setPositiveButton(android.R.string.ok, null)
+            .show()
+    }
+
+    companion object {
+        private const val DAILY_WORD_WORK_NAME = "daily_word_work"
     }
 }

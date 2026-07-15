@@ -3,18 +3,23 @@ package labs.creative.dictornarymvvm.ui.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import labs.creative.dictornarymvvm.data.preferences.UserPreferencesRepository
-import labs.creative.dictornarymvvm.domain.model.WordInfo
-import labs.creative.dictornarymvvm.ui.adapter.TrendingWord
-import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
+import labs.creative.dictornarymvvm.data.preferences.UserPreferencesRepository
+import labs.creative.dictornarymvvm.domain.model.WordInfo
+import labs.creative.dictornarymvvm.domain.usecase.GetWordInfoUseCase
+import labs.creative.dictornarymvvm.ui.adapter.TrendingWord
+import timber.log.Timber
+import java.time.LocalDate
+import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    private val userPreferencesRepository: UserPreferencesRepository
+    private val userPreferencesRepository: UserPreferencesRepository,
+    private val getWordInfoUseCase: GetWordInfoUseCase,
 ) : ViewModel() {
 
     private val _wordOfTheDay = MutableStateFlow<WordInfo?>(null)
@@ -26,6 +31,29 @@ class MainViewModel @Inject constructor(
     val recentWords: StateFlow<List<String>> = userPreferencesRepository.recentWords
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(TIMEOUT_MS), emptyList())
 
+    private val wordOfTheDayPool = listOf(
+        "ephemeral",
+        "serendipity",
+        "ubiquitous",
+        "eloquent",
+        "melancholy",
+        "resilient",
+        "paradigm",
+        "aesthetic",
+        "catalyst",
+        "nuance",
+        "pragmatic",
+        "resilience",
+        "candid",
+        "ambiguous",
+        "meticulous",
+        "tenacious",
+        "whimsical",
+        "cognizant",
+        "labyrinth",
+        "quintessential",
+    )
+
     companion object {
         private const val TIMEOUT_MS = 5000L
     }
@@ -34,22 +62,23 @@ class MainViewModel @Inject constructor(
         loadMvpData()
     }
 
+    @Suppress("TooGenericExceptionCaught")
     private fun loadMvpData() {
-        _wordOfTheDay.value = WordInfo(
-            word = "Ephemeral",
-            phonetic = "/ih-FEM-er-uhl/",
-            audioUrl = null,
-            partOfSpeech = "adjective",
-            definitions = listOf(
-                "Lasting for a very short time. Something that is fleeting, transitory, or brief in duration.",
-            ),
-            examples = listOf(
-                "The beauty of cherry blossoms is ephemeral, lasting only a few days each spring.",
-                "Fame can be ephemeral, here today and gone tomorrow.",
-            ),
-            synonyms = listOf("fleeting", "transient", "momentary", "brief", "passing"),
-            antonyms = listOf("permanent", "enduring", "lasting", "eternal"),
-        )
+        viewModelScope.launch {
+            try {
+                val dayOfYear = LocalDate.now().dayOfYear
+                val word = wordOfTheDayPool[dayOfYear % wordOfTheDayPool.size]
+                val results = getWordInfoUseCase(word)
+                _wordOfTheDay.value = results.firstOrNull()
+            } catch (e: kotlinx.coroutines.CancellationException) {
+                // Must propagate so the coroutine/viewModelScope can unwind properly
+                // (e.g. when the ViewModel is cleared while the request is in flight).
+                throw e
+            } catch (e: Exception) {
+                Timber.e(e, "Failed to load word of the day")
+                _wordOfTheDay.value = null
+            }
+        }
 
         _trendingWords.value = listOf(
             TrendingWord(

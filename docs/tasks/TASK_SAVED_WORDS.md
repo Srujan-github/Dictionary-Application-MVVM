@@ -4,7 +4,7 @@
 > **Fragment:** `SavedWordsFragment` *(to be created)*  
 > **Layout:** `fragment_saved.xml` *(to be created)*  
 > **ViewModel:** `SavedWordsViewModel` *(to be created)*  
-> **Status:** 🔴 Not Started — requires Room DB setup first
+> **Status:** 🟢 Done — Room-backed persistence, swipe-to-delete with Undo, and bottom-nav tab all implemented
 
 ---
 
@@ -317,37 +317,37 @@ The existing `MainActivity` uses a bottom navigation bar. Add the Saved tab dest
 
 | # | Task | Priority | Status |
 |---|------|----------|--------|
-| 1 | Add Room dependency to `build.gradle.kts` | 🔴 High | ⬜ Pending |
-| 2 | Create `SavedWordEntity` | 🔴 High | ⬜ Pending |
-| 3 | Create `SavedWordDao` | 🔴 High | ⬜ Pending |
-| 4 | Create `AppDatabase` | 🔴 High | ⬜ Pending |
-| 5 | Create `DatabaseModule` (Hilt) | 🔴 High | ⬜ Pending |
-| 6 | Add `SavedWord` domain model | 🔴 High | ⬜ Pending |
-| 7 | Expand `WordRepository` interface with saved word methods | 🔴 High | ⬜ Pending |
-| 8 | Implement repository methods in `WordRepositoryImpl` | 🔴 High | ⬜ Pending |
-| 9 | Create `GetSavedWordsUseCase`, `SaveWordUseCase`, `DeleteSavedWordUseCase` | 🔴 High | ⬜ Pending |
-| 10 | Create `SavedWordsViewModel` | 🔴 High | ⬜ Pending |
-| 11 | Design `fragment_saved.xml` with list + empty state | 🔴 High | ⬜ Pending |
-| 12 | Design `item_saved_word.xml` item layout | 🔴 High | ⬜ Pending |
-| 13 | Create `SavedWordsAdapter` (ListAdapter + DiffUtil) | 🔴 High | ⬜ Pending |
-| 14 | Create `SavedWordsFragment` and wire to ViewModel | 🔴 High | ⬜ Pending |
-| 15 | Integrate bookmark button in `ResultFragment` → calls `SaveWordUseCase` | 🔴 High | ⬜ Pending |
-| 16 | Add Saved tab to Bottom Navigation in `activity_main.xml` | 🟡 Medium | ⬜ Pending |
-| 17 | Add swipe-to-delete with undo Snackbar | 🟡 Medium | ⬜ Pending |
-| 18 | Update saved word count in subtitle reactively | 🟡 Medium | ⬜ Pending |
+| 1 | Add Room dependency to `build.gradle.kts` | 🔴 High | ✅ Done |
+| 2 | Create `SavedWordEntity` | 🔴 High | ✅ Done |
+| 3 | Create `SavedWordDao` | 🔴 High | ✅ Done |
+| 4 | Create `AppDatabase` | 🔴 High | ✅ Done |
+| 5 | Create `DatabaseModule` (Hilt) | 🔴 High | ✅ Done |
+| 6 | Add `SavedWord` domain model | 🔴 High | ✅ Done |
+| 7 | Expand `WordRepository` interface with saved word methods | 🔴 High | ✅ Done |
+| 8 | Implement repository methods in `WordRepositoryImpl` | 🔴 High | ✅ Done |
+| 9 | Create `GetSavedWordsUseCase`, `SaveWordUseCase`, `DeleteSavedWordUseCase` | 🔴 High | ✅ Done |
+| 10 | Create `SavedWordsViewModel` | 🔴 High | ✅ Done |
+| 11 | Design `fragment_saved.xml` with list + empty state | 🔴 High | ✅ Done |
+| 12 | Design `item_saved_word.xml` item layout | 🔴 High | ✅ Done |
+| 13 | Create `SavedWordsAdapter` (ListAdapter + DiffUtil) | 🔴 High | ✅ Done |
+| 14 | Create `SavedWordsFragment` and wire to ViewModel | 🔴 High | ✅ Done |
+| 15 | Integrate bookmark button in `ResultFragment` → calls `SaveWordUseCase` | 🔴 High | ✅ Done |
+| 16 | Add Saved tab to Bottom Navigation in `activity_main.xml` | 🟡 Medium | ✅ Done |
+| 17 | Add swipe-to-delete with undo Snackbar | 🟡 Medium | ✅ Done |
+| 18 | Update saved word count in subtitle reactively | 🟡 Medium | ✅ Done |
 
 ---
 
 ## 11. Acceptance Criteria
 
-- [ ] Room database is created without crashing.
-- [ ] Bookmarking a word in ResultFragment saves it to Room DB.
-- [ ] SavedWordsFragment shows the list of saved words in reverse chronological order.
-- [ ] Subtitle shows correct count (e.g., "3 words saved").
-- [ ] Tapping a saved word navigates to its detail screen.
-- [ ] Swiping a word left deletes it from the list.
-- [ ] Empty state is shown when no words are saved.
-- [ ] Bookmark toggle icon updates correctly (filled when saved, outline when not).
+- [x] Room database is created without crashing.
+- [x] Bookmarking a word in ResultFragment saves it to Room DB.
+- [x] SavedWordsFragment shows the list of saved words in reverse chronological order.
+- [x] Subtitle shows correct count (e.g., "3 words saved").
+- [x] Tapping a saved word navigates to its detail screen.
+- [x] Swiping a word left deletes it from the list.
+- [x] Empty state is shown when no words are saved.
+- [x] Bookmark toggle icon updates correctly (filled when saved, outline when not).
 
 ---
 
