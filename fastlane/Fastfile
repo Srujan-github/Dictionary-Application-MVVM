@@ -1,0 +1,43 @@
+default_platform(:android)
+
+platform :android do
+  desc "Runs all the tests"
+  lane :test do
+    gradle(task: "test")
+  end
+
+  desc "Submit a new Beta Build to Firebase App Distribution"
+  lane :beta do
+    gradle(
+      task: "assemble",
+      build_type: "Release"
+    )
+    # TODO: Firebase is scaffolded but not fully configured yet. Before this
+    # lane will work, set the following environment variables:
+    #   FIREBASE_APP_ID    - Firebase Console > Project Settings > (select the Android app)
+    #   FIREBASE_TOKEN     - generate via `firebase login:ci`
+    firebase_app_distribution(
+      app: ENV["FIREBASE_APP_ID"] || "REPLACE_WITH_FIREBASE_APP_ID",
+      groups: "testers",
+      release_notes: "Beta release",
+      firebase_cli_token: ENV["FIREBASE_TOKEN"],
+    )
+  end
+
+  desc "Build the release bundle"
+  lane :build_release do
+    gradle(
+      task: "bundle",
+      build_type: "Release"
+    )
+  end
+
+  desc "Deploy a new version to the Google Play"
+  lane :deploy do
+    gradle(
+      task: "bundle",
+      build_type: "Release"
+    )
+    # upload_to_play_store
+  end
+end
