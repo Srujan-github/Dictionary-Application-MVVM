@@ -24,3 +24,6 @@ local.properties
 # release signing — never commit
 /keystore/
 keystore.properties
+
+# generated Play Store listing assets — not source
+/play-assets/
