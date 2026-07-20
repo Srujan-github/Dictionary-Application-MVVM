@@ -1,9 +1,20 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
     id("com.google.dagger.hilt.android")
     alias(libs.plugins.ksp)
     alias(libs.plugins.navigation.safe.args)
+    alias(libs.plugins.google.services)
+    alias(libs.plugins.firebase.crashlytics.plugin)
+}
+
+val keystorePropertiesFile = rootProject.file("keystore.properties")
+val keystoreProperties = Properties()
+val hasKeystoreProperties = keystorePropertiesFile.exists()
+if (hasKeystoreProperties) {
+    keystoreProperties.load(keystorePropertiesFile.inputStream())
 }
 
 android {
@@ -14,15 +25,29 @@ android {
         applicationId = "labs.creative.dictornarymvvmapp"
         minSdk = 24
         targetSdk = 35
-        versionCode = 2
-        versionName = "1.1"
+        versionCode = 3
+        versionName = "1.2"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    signingConfigs {
+        if (hasKeystoreProperties) {
+            create("release") {
+                storeFile = file(keystoreProperties["storeFile"] as String)
+                storePassword = keystoreProperties["storePassword"] as String
+                keyAlias = keystoreProperties["keyAlias"] as String
+                keyPassword = keystoreProperties["keyPassword"] as String
+            }
+        }
     }
 
     buildTypes {
         release {
             isMinifyEnabled = true
             isShrinkResources = true
+            if (hasKeystoreProperties) {
+                signingConfig = signingConfigs.getByName("release")
+            }
             // Upload native debug symbols to Play Console for crash symbolication
             ndk {
                 debugSymbolLevel = "FULL"
@@ -97,8 +122,15 @@ dependencies {
     // DataStore
     implementation(libs.androidx.datastore.preferences)
 
+    // Firebase
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.crashlytics)
+
     // WorkManager
     implementation(libs.androidx.work.runtime.ktx)
+
+    // Google Mobile Ads (AdMob)
+    implementation(libs.play.services.ads)
 
     //dateKT
     detektPlugins(libs.detekt.formatting)

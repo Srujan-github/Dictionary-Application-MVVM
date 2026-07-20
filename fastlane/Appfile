@@ -1,0 +1,9 @@
+# Path to the Play Console API service-account JSON key.
+# Set the PLAY_STORE_JSON_KEY_PATH environment variable to the absolute path
+# of your downloaded service-account key before running `fastlane deploy`.
+# See https://docs.fastlane.tools/actions/supply/#setup for how to create a
+# Google Cloud service account with Play Console API access and download
+# its JSON key.
+json_key_file(ENV["PLAY_STORE_JSON_KEY_PATH"] || "")
+
+package_name("labs.creative.dictornarymvvmapp") # e.g. com.krausefx.app

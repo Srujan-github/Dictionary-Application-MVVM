@@ -20,3 +20,7 @@ local.properties
 # build artifacts / local tool caches — not source
 /app/release/
 /vendor/
+
+# release signing — never commit
+/keystore/
+keystore.properties

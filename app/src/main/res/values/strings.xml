@@ -73,4 +73,8 @@
     <string name="hello_search_fragment">Search fragment</string>
     <string name="hello_result_fragment">Loading…</string>
     <string name="dictionary_app_title">Discover Words</string>
+
+    <!-- AdMob (Google Mobile Ads) -->
+    <string name="admob_app_id" translatable="false">ca-app-pub-6738427585267169~4976459651</string>
+    <string name="admob_banner_ad_unit_id" translatable="false">ca-app-pub-6738427585267169/4306109883</string>
 </resources>

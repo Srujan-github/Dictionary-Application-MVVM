@@ -10,6 +10,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.gms.ads.AdRequest
 import com.google.android.material.chip.Chip
 import com.google.android.material.transition.MaterialFadeThrough
 import dagger.hilt.android.AndroidEntryPoint
@@ -54,6 +55,11 @@ class MainFragment : Fragment() {
         observeViewModel()
         setupClickListeners()
         startTypeWriter()
+        loadBannerAd()
+    }
+
+    private fun loadBannerAd() {
+        binding.adViewBanner.loadAd(AdRequest.Builder().build())
     }
 
     private fun setupTrendingList() {
@@ -155,6 +161,7 @@ class MainFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        binding.adViewBanner.destroy()
         _binding = null
     }
 }
