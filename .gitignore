@@ -25,5 +25,9 @@ local.properties
 /keystore/
 keystore.properties
 
+# Firebase config — contains a Google API key; provide locally or via CI secret
+# (see fastlane/README.md), never commit
+/app/google-services.json
+
 # generated Play Store listing assets — not source
 /play-assets/

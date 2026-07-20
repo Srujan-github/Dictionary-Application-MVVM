@@ -11,7 +11,14 @@ Manual steps required before `fastlane deploy` will work:
    path of the downloaded JSON key (consumed by `fastlane/Appfile`).
 3. Run `bundle install` once, from the project root, to install fastlane
    per the `Gemfile`.
-4. Run `fastlane deploy`.
+4. `app/google-services.json` is no longer committed (it's gitignored — it
+   contains a Google API key GitHub flags in public repos). Restore it
+   locally before building:
+   `echo "$GOOGLE_SERVICES_JSON" | base64 -d > app/google-services.json`
+   The base64-encoded file is stored as the `GOOGLE_SERVICES_JSON` repo
+   secret. Grab the original from Firebase Console > Project Settings if
+   you need a fresh copy instead.
+5. Run `fastlane deploy`.
 
 ## Lanes
 
