@@ -1,0 +1,103 @@
+# Setup checklist — do this once before `fastlane deploy` will work:
+#   1. Create a Google Cloud service account with "Service Account User"
+#      role and enable/grant it Google Play Android Developer API access,
+#      then in Play Console > Setup > API access, grant that service
+#      account "Release Manager" (or equivalent release) permissions for
+#      this app. Download its JSON key.
+#      Full steps: https://docs.fastlane.tools/actions/supply/#setup
+#   2. Set the PLAY_STORE_JSON_KEY_PATH environment variable to the
+#      absolute path of the downloaded JSON key (used by fastlane/Appfile).
+#   3. Run `bundle install` once (installs fastlane per the Gemfile).
+#   4. Run `fastlane deploy`.
+
+default_platform(:android)
+
+platform :android do
+  desc "Runs all the tests"
+  lane :test do
+    gradle(task: "test")
+  end
+
+  desc "Submit a new Beta Build to Firebase App Distribution"
+  lane :beta do
+    gradle(
+      task: "assemble",
+      build_type: "Release"
+    )
+    # TODO: Firebase is scaffolded but not fully configured yet. Before this
+    # lane will work, set the following environment variables:
+    #   FIREBASE_APP_ID    - Firebase Console > Project Settings > (select the Android app)
+    #   FIREBASE_TOKEN     - generate via `firebase login:ci`
+    firebase_app_distribution(
+      app: ENV["FIREBASE_APP_ID"] || "REPLACE_WITH_FIREBASE_APP_ID",
+      groups: "testers",
+      release_notes: "Beta release",
+      firebase_cli_token: ENV["FIREBASE_TOKEN"],
+    )
+  end
+
+  desc "Build the release bundle"
+  lane :build_release do
+    gradle(
+      task: "bundle",
+      build_type: "Release"
+    )
+  end
+
+  desc "Bump versionCode and versionName in app/build.gradle.kts"
+  lane :bump_version do
+    # app/build.gradle.kts uses Kotlin DSL syntax (`versionCode = 3`,
+    # `versionName = "1.2"`). Fastlane's built-in `increment_version_code`
+    # / `increment_version_name` actions are written for Groovy
+    # build.gradle files (`versionCode 3`, no `=`) and will not match this
+    # file, so we do a direct regex replace instead.
+    gradle_file_path = "../app/build.gradle.kts"
+    content = File.read(gradle_file_path)
+
+    version_code_match = content.match(/versionCode\s*=\s*(\d+)/)
+    version_name_match = content.match(/versionName\s*=\s*"([^"]+)"/)
+
+    UI.user_error!("Could not find versionCode in #{gradle_file_path}") unless version_code_match
+    UI.user_error!("Could not find versionName in #{gradle_file_path}") unless version_name_match
+
+    old_version_code = version_code_match[1].to_i
+    new_version_code = old_version_code + 1
+
+    old_version_name = version_name_match[1]
+    # Bump the last dot-separated segment, e.g. "1.2" -> "1.3"
+    name_parts = old_version_name.split(".")
+    name_parts[-1] = (name_parts[-1].to_i + 1).to_s
+    new_version_name = name_parts.join(".")
+
+    content = content.sub(/versionCode\s*=\s*\d+/, "versionCode = #{new_version_code}")
+    content = content.sub(/versionName\s*=\s*"[^"]+"/, "versionName = \"#{new_version_name}\"")
+
+    File.write(gradle_file_path, content)
+
+    UI.success("Bumped versionCode #{old_version_code} -> #{new_version_code}, versionName #{old_version_name} -> #{new_version_name}")
+  end
+
+  desc "Deploy a new version to the Google Play internal testing track"
+  lane :deploy do
+    gradle(
+      task: "bundle",
+      build_type: "Release"
+    )
+    # Uploads to the "internal" testing track (matches what's currently
+    # active in Play Console) with release_status "draft", so the release
+    # is created but NOT auto-published — it must be reviewed and rolled
+    # out manually from the Play Console.
+    #
+    # To promote to production later, either:
+    #   1. Promote the internal build to production manually in the Play
+    #      Console UI, or
+    #   2. Re-run this lane with track: "production" and
+    #      release_status: "completed" once you're ready to publish
+    #      directly from fastlane.
+    upload_to_play_store(
+      track: "internal",
+      aab: "app/build/outputs/bundle/release/app-release.aab",
+      release_status: "draft"
+    )
+  end
+end

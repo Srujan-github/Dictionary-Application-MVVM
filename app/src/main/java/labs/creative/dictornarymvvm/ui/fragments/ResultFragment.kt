@@ -12,6 +12,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.google.android.gms.ads.AdRequest
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.chip.Chip
 import dagger.hilt.android.AndroidEntryPoint
@@ -51,11 +52,16 @@ class ResultFragment : Fragment() {
         ttsManager.init()
         setupClickListeners()
         observeViewModel()
+        loadBannerAd()
 
         // Bug 3 fix: only fetch if not already loaded (ViewModel survives tab switches)
         if (viewModel.wordInfo.value == null) {
             viewModel.fetchWordInfo(args.word)
         }
+    }
+
+    private fun loadBannerAd() {
+        binding.adViewBanner.loadAd(AdRequest.Builder().build())
     }
 
     private fun setupClickListeners() {
@@ -268,6 +274,7 @@ class ResultFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         releaseAudioPlayer()
+        binding.adViewBanner.destroy()
         _binding = null
         // TtsManager is a Singleton — do NOT shut it down here
     }

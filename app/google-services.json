@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "131963953231",
+    "project_id": "dictornarymvvm",
+    "storage_bucket": "dictornarymvvm.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:131963953231:android:18886bb72410e1c28c4a3a",
+        "android_client_info": {
+          "package_name": "labs.creative.dictornarymvvmapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDU2CQ4Id3HMEaRnukkEFUuQjMeyy3JPKE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

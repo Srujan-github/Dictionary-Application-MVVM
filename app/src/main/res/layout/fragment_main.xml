@@ -248,5 +248,14 @@
             tools:itemCount="3"
             tools:listitem="@layout/item_trending_word" />
 
+        <!-- ── Banner Ad ── -->
+        <com.google.android.gms.ads.AdView
+            android:id="@+id/adViewBanner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_lg"
+            app:adSize="BANNER"
+            app:adUnitId="@string/admob_banner_ad_unit_id" />
+
     </LinearLayout>
 </ScrollView>
