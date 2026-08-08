@@ -90,10 +90,10 @@ class SettingsFragment : Fragment() {
             showAboutDialog()
         }
         binding.rowPrivacy.setOnClickListener {
-            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://example.com/privacy")))
+            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.privacy_policy_url))))
         }
         binding.rowFeedback.setOnClickListener {
-            startActivity(Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:feedback@lexicon.app")))
+            startActivity(Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:" + getString(R.string.feedback_email))))
         }
         binding.rowRate.setOnClickListener {
             val uri = Uri.parse("market://details?id=${requireContext().packageName}")

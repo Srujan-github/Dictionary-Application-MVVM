@@ -1,39 +1,117 @@
-**Terms & Conditions**
+# Privacy Policy
 
-These terms and conditions apply to the Modern-Day Dictionary app (hereby referred to as "Application") for mobile devices that was created by sai srujan (hereby referred to as "Service Provider") as a Free service.
+**Application:** Modern-Day Dictionary
+**Developer:** sai srujan ("Service Provider")
+**Effective date:** 2026-08-08
 
-Upon downloading or utilizing the Application, you are automatically agreeing to the following terms. It is strongly advised that you thoroughly read and understand these terms prior to using the Application.
+This privacy policy explains what information the Modern-Day Dictionary
+application ("the Application") collects, why it is collected, and who it is
+shared with. The Application is provided as a free service.
 
-Unauthorized copying, modification of the Application, any part of the Application, or our trademarks is strictly prohibited. Any attempts to extract the source code of the Application, translate the Application into other languages, or create derivative versions are not permitted. All trademarks, copyrights, database rights, and other intellectual property rights related to the Application remain the property of the Service Provider.
+The Application has **no user accounts and no login**. You are never asked to
+provide your name, email address, phone number, or any other contact detail in
+order to use it.
 
-The Service Provider is dedicated to ensuring that the Application is as beneficial and efficient as possible. As such, they reserve the right to modify the Application or charge for their services at any time and for any reason. The Service Provider assures you that any charges for the Application or its services will be clearly communicated to you.
+## Information stored only on your device
 
-The Application stores and processes personal data that you have provided to the Service Provider in order to provide the Service. It is your responsibility to maintain the security of your phone and access to the Application. The Service Provider strongly advise against jailbreaking or rooting your phone, which involves removing software restrictions and limitations imposed by the official operating system of your device. Such actions could expose your phone to malware, viruses, malicious programs, compromise your phone's security features, and may result in the Application not functioning correctly or at all.
+The following information is saved locally on your device and is **never
+transmitted to the Service Provider**:
 
-Please note that the Application utilizes third-party services that have their own Terms and Conditions. Below are the links to the Terms and Conditions of the third-party service providers used by the Application:
+| Data | Purpose |
+| --- | --- |
+| Words you save to your list, along with their phonetic spelling, part of speech, short definition, and the time you saved them | To show your saved words list |
+| Your recent searches | To show the "Recent" shortcuts on the home screen |
+| App settings — dark mode, daily-word notification toggle, app language | To remember your preferences |
 
-*   [Google Play Services](https://policies.google.com/terms)
+This data is held in the Application's private storage. **Uninstalling the
+Application deletes all of it.** You can also clear saved words and recent
+searches from within the app at any time.
 
-Please be aware that the Service Provider does not assume responsibility for certain aspects. Some functions of the Application require an active internet connection, which can be Wi-Fi or provided by your mobile network provider. The Service Provider cannot be held responsible if the Application does not function at full capacity due to lack of access to Wi-Fi or if you have exhausted your data allowance.
+## Information sent to third-party services
 
-If you are using the application outside of a Wi-Fi area, please be aware that your mobile network provider's agreement terms still apply. Consequently, you may incur charges from your mobile provider for data usage during the connection to the application, or other third-party charges. By using the application, you accept responsibility for any such charges, including roaming data charges if you use the application outside of your home territory (i.e., region or country) without disabling data roaming. If you are not the bill payer for the device on which you are using the application, they assume that you have obtained permission from the bill payer.
+The Application does not operate its own servers. To provide its features it
+sends limited data to the following third parties, each of which handles that
+data under its own privacy policy.
 
-Similarly, the Service Provider cannot always assume responsibility for your usage of the application. For instance, it is your responsibility to ensure that your device remains charged. If your device runs out of battery and you are unable to access the Service, the Service Provider cannot be held responsible.
+### Dictionary providers
 
-In terms of the Service Provider's responsibility for your use of the application, it is important to note that while they strive to ensure that it is updated and accurate at all times, they do rely on third parties to provide information to them so that they can make it available to you. The Service Provider accepts no liability for any loss, direct or indirect, that you experience as a result of relying entirely on this functionality of the application.
+When you look up a word, that **search term** is sent to the dictionary
+services below so that a definition can be returned. No identifier of you or
+your device is attached to these requests.
 
-The Service Provider may wish to update the application at some point. The application is currently available as per the requirements for the operating system (and for any additional systems they decide to extend the availability of the application to) may change, and you will need to download the updates if you want to continue using the application. The Service Provider does not guarantee that it will always update the application so that it is relevant to you and/or compatible with the particular operating system version installed on your device. However, you agree to always accept updates to the application when offered to you. The Service Provider may also wish to cease providing the application and may terminate its use at any time without providing termination notice to you. Unless they inform you otherwise, upon any termination, (a) the rights and licenses granted to you in these terms will end; (b) you must cease using the application, and (if necessary) delete it from your device.
+* [Free Dictionary API](https://dictionaryapi.dev/) — `api.dictionaryapi.dev`
+* [Datamuse API](https://www.datamuse.com/api/) — `api.datamuse.com`
 
-**Changes to These Terms and Conditions**
+### Advertising — Google AdMob
 
-The Service Provider may periodically update their Terms and Conditions. Therefore, you are advised to review this page regularly for any changes. The Service Provider will notify you of any changes by posting the new Terms and Conditions on this page.
+The Application displays banner advertising through Google AdMob. AdMob may
+collect your device's **advertising ID**, approximate location derived from IP
+address, device information, and ad interaction data in order to serve and
+measure ads. See [Google's Privacy Policy](https://policies.google.com/privacy)
+and [how Google uses information from apps that use its services](https://policies.google.com/technologies/partner-sites).
 
-These terms and conditions are effective as of 2026-04-04
+You can reset or delete your advertising ID at any time in your device settings
+under *Settings → Privacy → Ads*.
 
-**Contact Us**
+### Crash reporting — Firebase Crashlytics
 
-If you have any questions or suggestions about the Terms and Conditions, please do not hesitate to contact the Service Provider at thammishettisaisrujan123@gmail.com.
+To diagnose faults, the Application sends **crash reports and diagnostic logs**
+to Firebase Crashlytics. These reports may include the device model, operating
+system version, the state of the app at the time of the fault, stack traces,
+and application log messages. See the
+[Firebase Privacy and Security policy](https://firebase.google.com/support/privacy).
 
-* * *
+### Voice search
 
-This Terms and Conditions page was generated by [App Privacy Policy Generator](https://app-privacy-policy-generator.nisrulz.com/)
+If you use voice search, the Application requests the `RECORD_AUDIO` permission
+and hands the request to **your device's built-in speech recognizer**. The
+Application does not record, store, or transmit audio itself — it receives only
+the transcribed text, which is then treated exactly like a typed search. The
+handling of the audio is governed by the speech recognition service supplied
+with your device.
+
+Text-to-speech pronunciation is performed by your device's built-in
+text-to-speech engine and involves no data collection by the Application.
+
+## Notifications
+
+If you enable the daily word feature, the Application requests permission to
+post notifications and schedules them **locally on your device**. No data is
+collected or transmitted in order to deliver these notifications, and you can
+turn the feature off in Settings.
+
+## Children's privacy
+
+The Application is not directed at children under the age of 13, and the
+Service Provider does not knowingly collect personal information from children
+under 13. If you believe a child has provided personal information, please
+contact the Service Provider at the address below so it can be deleted.
+
+## Data retention and deletion
+
+Locally stored data is retained until you delete it in the app or uninstall the
+Application. Data held by the third-party services listed above is retained
+according to their own policies; the advertising ID can be reset or deleted
+through your device settings.
+
+## Security
+
+The Application communicates with the services listed above over encrypted
+HTTPS connections. The Service Provider strongly advises against jailbreaking
+or rooting your device, as this may compromise its security features and cause
+the Application to malfunction.
+
+## Changes to this Privacy Policy
+
+This privacy policy may be updated from time to time. Any changes will be
+posted on this page along with a revised effective date. You are advised to
+review this page periodically.
+
+## Contact
+
+If you have questions about this privacy policy, contact the Service Provider
+at **thammishettisaisrujan123@gmail.com**.
+
+---
+
+See also the [Terms & Conditions](terms.md) for this Application.
