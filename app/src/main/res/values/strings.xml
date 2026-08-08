@@ -73,4 +73,7 @@
     <string name="hello_search_fragment">Search fragment</string>
     <string name="hello_result_fragment">Loading…</string>
     <string name="dictionary_app_title">Discover Words</string>
+    <!-- Legal / contact -->
+    <string name="privacy_policy_url" translatable="false">https://srujan-github.github.io/Dictionary-Application-MVVM/privacy-policy</string>
+    <string name="feedback_email" translatable="false">thammishettisaisrujan123@gmail.com</string>
 </resources>

@@ -110,7 +110,7 @@ review this page periodically.
 ## Contact
 
 If you have questions about this privacy policy, contact the Service Provider
-at **saisrujan.sss@gmail.com**.
+at **thammishettisaisrujan123@gmail.com**.
 
 ---
 
